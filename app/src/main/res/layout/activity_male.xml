@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity_Female">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/lightGreen">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choosing Character"
+            android:textAllCaps="true"
+            android:textSize="60sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/storytime"
+            android:gravity="center"
+            android:layout_gravity="center"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male"
+                android:textAllCaps="true"
+                android:textSize="35sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/storytime"
+                android:layout_marginStart="170dp"
+                android:layout_marginTop="20dp"
+                />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/panel_col"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="7"
+                android:orientation="vertical">
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+
+
+        </LinearLayout>
+
+</LinearLayout>
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:layout_marginStart="15dp"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/male_IBT_grandpa"-->
+<!--            android:layout_width="120dp"-->
+<!--            android:layout_height="120dp"-->
+<!--            android:background="@drawable/grandpa"-->
+<!--            android:scaleType="fitCenter"/>-->
+
+<!--        <View-->
+<!--            android:layout_width="10dp"-->
+<!--            android:layout_height="wrap_content"/>-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/male_IBT_man"-->
+<!--            android:layout_width="120dp"-->
+<!--            android:layout_height="120dp"-->
+<!--            android:background="@drawable/man"-->
+<!--            android:scaleType="fitCenter"/>-->
+
+<!--        <View-->
+<!--            android:layout_width="10dp"-->
+<!--            android:layout_height="wrap_content"/>-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/male_IBT_boy"-->
+<!--            android:layout_width="120dp"-->
+<!--            android:layout_height="120dp"-->
+<!--            android:background="@drawable/boy"-->
+<!--            android:scaleType="fitCenter"/>-->
+
+
+
+<!--    </LinearLayout>-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:layout_marginStart="15dp"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/male_IBT_man1"-->
+<!--            android:layout_width="120dp"-->
+<!--            android:layout_height="120dp"-->
+<!--            android:background="@drawable/man1"-->
+<!--            android:scaleType="fitCenter"/>-->
+
+<!--        <View-->
+<!--            android:layout_width="10dp"-->
+<!--            android:layout_height="wrap_content"/>-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/male_IBT_man2"-->
+<!--            android:layout_width="120dp"-->
+<!--            android:layout_height="120dp"-->
+<!--            android:background="@drawable/man2"-->
+<!--            android:scaleType="fitCenter"/>-->
+
+<!--        <View-->
+<!--            android:layout_width="10dp"-->
+<!--            android:layout_height="wrap_content"/>-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/male_IBT_model"-->
+<!--            android:layout_width="120dp"-->
+<!--            android:layout_height="120dp"-->
+<!--            android:background="@drawable/model"-->
+<!--            android:scaleType="fitCenter"/>-->
+
+
+
+<!--    </LinearLayout>-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:layout_marginStart="15dp"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/male_IBT_employee"-->
+<!--            android:layout_width="120dp"-->
+<!--            android:layout_height="120dp"-->
+<!--            android:background="@drawable/employee"-->
+<!--            android:scaleType="fitCenter"/>-->
+
+<!--        <View-->
+<!--            android:layout_width="10dp"-->
+<!--            android:layout_height="wrap_content"/>-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/male_IBT_man4"-->
+<!--            android:layout_width="120dp"-->
+<!--            android:layout_height="120dp"-->
+<!--            android:background="@drawable/man4"-->
+<!--            android:scaleType="fitCenter"/>-->
+
+<!--        <View-->
+<!--            android:layout_width="10dp"-->
+<!--            android:layout_height="wrap_content"/>-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/male_IBT_man3"-->
+<!--            android:layout_width="120dp"-->
+<!--            android:layout_height="120dp"-->
+<!--            android:background="@drawable/man3"-->
+<!--            android:scaleType="fitCenter"/>-->
+
+
+
+
