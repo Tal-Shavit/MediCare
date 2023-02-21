@@ -15,14 +15,9 @@
         android:layout_weight="2"
         android:background="@color/lightGreen">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="220dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
@@ -32,8 +27,9 @@
                     android:id="@+id/calander_LBL_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/storytime"
                     android:text="Tal Shavit"
+                    android:fontFamily="@font/candara"
+                    android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="32sp" />
 
@@ -41,45 +37,41 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/calander_LBL_day"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/storytime"
+                        android:fontFamily="@font/candara"
                         android:text="Sunday"
-                        android:textSize="24sp" />
+                        android:textAllCaps="true"
+                        android:textSize="22sp" />
 
                     <View
-                        android:layout_width="10dp"
+                        android:layout_width="5dp"
                         android:layout_height="match_parent" />
 
                     <TextView
                         android:id="@+id/calander_LBL_intDayMonth"
-                        android:layout_width="wrap_content"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/storytime"
+                        android:fontFamily="@font/candara"
                         android:text="30.01"
-                        android:textSize="24sp" />
+                        android:textSize="22sp" />
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-
-            <ImageView
-                android:id="@+id/female_IMG_image"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="100dp"
-                android:background="@drawable/profile"
-                android:scaleType="fitCenter" />
-
-
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/female_IMG_image"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/other2"
+            android:scaleType="fitCenter" />
 
 
     </LinearLayout>
@@ -91,71 +83,123 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/calander_LBL_sunday"
-            android:layout_width="58dp"
-            android:layout_height="wrap_content"
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/calander_MBTN_sunday"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
             android:text="SUN"
+            android:textSize="11dp"
             android:textColor="@color/black"
-            android:textSize="10sp"
-            android:backgroundTint="@color/white"/>
+            android:fontFamily="@font/candara"
+            app:strokeColor="@color/black"
+            app:strokeWidth="2dp"
+            android:backgroundTint="@color/white"
+            android:textStyle="bold"/>
 
-        <Button
-            android:id="@+id/calander_LBL_mon"
-            android:layout_width="58dp"
-            android:layout_height="wrap_content"
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/calander_MBTN_monday"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
             android:text="MON"
+            android:textSize="9dp"
             android:textColor="@color/black"
-            android:textSize="10sp"
-            android:backgroundTint="@color/white"/>
+            android:fontFamily="@font/candara"
+            app:strokeColor="@color/black"
+            app:strokeWidth="2dp"
+            android:backgroundTint="@color/white"
+            android:textStyle="bold"/>
 
-        <Button
-            android:id="@+id/calander_LBL_tue"
-            android:layout_width="58dp"
-            android:layout_height="wrap_content"
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/calander_MBTN_tueday"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
             android:text="TUE"
+            android:textSize="11dp"
             android:textColor="@color/black"
-            android:textSize="10sp"
-            android:backgroundTint="@color/white"/>
+            android:fontFamily="@font/candara"
+            app:strokeColor="@color/black"
+            app:strokeWidth="2dp"
+            android:backgroundTint="@color/white"
+            android:textStyle="bold"/>
 
-        <Button
-            android:id="@+id/calander_LBL_wed"
-            android:layout_width="58dp"
-            android:layout_height="wrap_content"
+        <View
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/calander_MBTN_wedensday"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
             android:text="WED"
+            android:textSize="10dp"
             android:textColor="@color/black"
-            android:textSize="10sp"
-            android:backgroundTint="@color/white"/>
+            android:fontFamily="@font/candara"
+            app:strokeColor="@color/black"
+            app:strokeWidth="2dp"
+            android:backgroundTint="@color/white"
+            android:textStyle="bold"/>
 
-        <Button
-            android:id="@+id/calander_LBL_thr"
-            android:layout_width="58dp"
-            android:layout_height="wrap_content"
-            android:text="THR"
+        <View
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/calander_MBTN_thursday"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:text="THU"
+            android:textSize="11dp"
             android:textColor="@color/black"
-            android:textAlignment="center"
-            android:textSize="10sp"
-            android:backgroundTint="@color/white"/>
+            android:fontFamily="@font/candara"
+            app:strokeColor="@color/black"
+            app:strokeWidth="2dp"
+            android:backgroundTint="@color/white"
+            android:textStyle="bold"/>
 
-        <Button
-            android:id="@+id/calander_LBL_fri"
-            android:layout_width="58dp"
-            android:layout_height="wrap_content"
+        <View
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/calander_MBTN_friday"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
             android:text="FRI"
+            android:textSize="11dp"
             android:textColor="@color/black"
-            android:textAlignment="center"
-            android:textSize="10sp"
-            android:backgroundTint="@color/white"/>
+            android:fontFamily="@font/candara"
+            app:strokeColor="@color/black"
+            app:strokeWidth="2dp"
+            android:backgroundTint="@color/white"
+            android:textStyle="bold"/>>
 
-        <Button
-            android:id="@+id/calander_LBL_sat"
-            android:layout_width="58dp"
-            android:layout_height="wrap_content"
+        <View
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/calander_MBTN_saturday"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
             android:text="SAT"
+            android:textSize="11dp"
             android:textColor="@color/black"
-            android:textAlignment="center"
-            android:textSize="10sp"
-            android:backgroundTint="@color/white"/>
+            android:fontFamily="@font/candara"
+            app:strokeColor="@color/black"
+            app:strokeWidth="2dp"
+            android:backgroundTint="@color/white"
+            android:textStyle="bold"/>
 
 
     </LinearLayout>
@@ -165,938 +209,42 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="6"
-        android:orientation="vertical"
-        android:background="@color/gray">
+        android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/calander_LAY_cyrcle"
+        <TextView
+            android:id="@+id/calander_TXT_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAllCaps="true"
+            android:fontFamily="@font/candara"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:textColor="@color/black"
+            android:layout_gravity="center"/>
+
+        <GridView
+            android:id="@+id/grid_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:numColumns="2" />
 
     </LinearLayout>
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="6"-->
-<!--        android:orientation="vertical"-->
-<!--        android:background="@color/gray">-->
-
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/recycler_day"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:layout_margin="30dp"-->
-<!--            android:background="@color/white"/>-->
-
-<!--    </LinearLayout>-->
 
     <Button
         android:id="@+id/ActivityCalan_BTN_addPill"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="add pill"
-        android:textColor="@color/black"
-        android:background="@null"
-        android:textStyle="bold"
         android:layout_gravity="center"
-        android:layout_marginBottom="30dp"
-        android:fontFamily="@font/storytime"
-        android:textSize="20sp"/>
-
-    <Button
-        android:id="@+id/ActivityCalan_BTN_check"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="for check"
-        android:textColor="@color/black"
-        android:background="@null"
+        android:background="@drawable/shapebutton"
+        android:fontFamily="@font/candaral"
         android:textStyle="bold"
-        android:layout_gravity="center"
-        android:layout_marginBottom="30dp"
-        android:fontFamily="@font/storytime"
-        android:textSize="20sp"/>
+        android:text="ADD PILL"
+        android:textColor="@color/black"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:textSize="22sp" />
 
-
-    <!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="6"-->
-<!--        android:orientation="vertical">-->
-
-
-<!--&lt;!&ndash;        <RelativeLayout&ndash;&gt;-->
-<!--&lt;!&ndash;            android:id="@+id/relativeLayout1"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:layout_height="wrap_content">&ndash;&gt;-->
-
-<!--            <LinearLayout-->
-<!--                android:id="@+id/linearLayout1"-->
-<!--                android:layout_width="400dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:orientation="horizontal">-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textView2"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:text="" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textView3"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:gravity="center"-->
-<!--                    android:text="Sun" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textView4"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:gravity="center"-->
-<!--                    android:text="Mon" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textView5"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:gravity="center"-->
-<!--                    android:text="Tues" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textView6"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:gravity="center"-->
-<!--                    android:text="Wed" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textView7"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:gravity="center"-->
-<!--                    android:text="Thu" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textView8"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:gravity="center"-->
-<!--                    android:text="Fri" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textView9"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:gravity="center"-->
-<!--                    android:text="Sat" />-->
-<!--            </LinearLayout>-->
-<!--&lt;!&ndash;        </RelativeLayout>&ndash;&gt;-->
-
-<!--        <ScrollView-->
-<!--            android:id="@+id/scrollView1"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:padding="0dp"-->
-<!--            android:scrollbars="none">"-->
-
-<!--            <RelativeLayout-->
-<!--                android:id="@+id/relativeLayout242"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:padding="0dp">-->
-
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="0dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="40dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="80dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="120dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="160dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="200dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="240dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="280dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="320dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="360dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="400dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="440dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="480dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="520dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="560dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="600dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="640dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="680dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="720dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="760dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="800dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="840dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="880dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="920dp"-->
-<!--                    android:background="#aaa" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="20dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="60dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="100dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="140dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="180dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="220dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="260dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="300dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="340dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="380dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="420dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="460dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="500dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="540dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="580dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="620dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="660dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="700dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="740dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="780dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="820dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="860dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="900dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <View-->
-<!--                    android:layout_width="fill_parent"-->
-<!--                    android:layout_height="1dp"-->
-<!--                    android:layout_marginTop="940dp"-->
-<!--                    android:background="#777" />-->
-
-<!--                <LinearLayout-->
-<!--                    android:id="@+id/linearLayout2"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:padding="0dp">-->
-
-<!--                    <RelativeLayout-->
-<!--                        android:id="@+id/relativeLayout2"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_weight="2"-->
-<!--                        android:padding="0dp">-->
-
-<!--                        <View-->
-<!--                            android:layout_width="1dp"-->
-<!--                            android:layout_height="fill_parent"-->
-<!--                            android:layout_alignParentRight="true"-->
-<!--                            android:background="#aaa" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView12"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="0dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="12am" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView1"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="40dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="1am" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView2am"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="80dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="2am" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView3am"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="120dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="3am" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView4am"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="160dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="4am" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView5am"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="200dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="5am" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textVie6am"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="240dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="6am" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView7am"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="280dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="7am" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView8am"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="320dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="8am" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView9am"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="360dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="9am" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView10am"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="400dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="10am" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView11am"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="440dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="11am" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView12pm"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="480dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="12pm" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView1pm"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="520dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="1pm" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView2pm"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="560dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="2pm" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView3pm"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="600dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="3pm" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView4pm"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="640dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="4pm" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView5pm"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="680dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="5pm" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView6pm"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="720dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="6pm" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView7pm"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="760dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="7pm" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView8pm"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="800dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="8pm" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView9pm"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="840dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="9pm" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView10pm"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="880dp"-->
-<!--                            android:gravity="center"-->
-<!--                            android:text="10pm" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/textView11pm"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="40dp"-->
-<!--                            android:layout_marginTop="920dp"-->
-<!--                            android:gravity="center|top"-->
-<!--                            android:text="11pm" />-->
-<!--                    </RelativeLayout>-->
-
-<!--                    <RelativeLayout-->
-<!--                        android:id="@+id/relativeLayout3"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_weight="14"-->
-<!--                        android:padding="0dp">-->
-
-<!--                        <LinearLayout-->
-<!--                            android:id="@+id/linearLayout3"-->
-<!--                            android:layout_width="400dp"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:padding="0dp">-->
-
-<!--                            <RelativeLayout-->
-<!--                                android:id="@+id/relativeLayout4"-->
-<!--                                android:layout_width="0dp"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:layout_weight="1">-->
-
-
-<!--                            </RelativeLayout>-->
-
-<!--                            <RelativeLayout-->
-<!--                                android:id="@+id/relativeLayout5"-->
-<!--                                android:layout_width="0dp"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:layout_weight="1">-->
-
-
-<!--                            </RelativeLayout>-->
-
-<!--                            <RelativeLayout-->
-<!--                                android:id="@+id/relativeLayout7"-->
-<!--                                android:layout_width="0dp"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:layout_weight="1">-->
-
-<!--                            </RelativeLayout>-->
-
-<!--                            <RelativeLayout-->
-<!--                                android:id="@+id/relativeLayout6"-->
-<!--                                android:layout_width="0dp"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:layout_weight="1">-->
-
-
-<!--                            </RelativeLayout>-->
-
-<!--                            <RelativeLayout-->
-<!--                                android:id="@+id/relativeLayout8"-->
-<!--                                android:layout_width="0dp"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:layout_weight="1">-->
-
-<!--                            </RelativeLayout>-->
-
-<!--                            <RelativeLayout-->
-<!--                                android:id="@+id/relativeLayout9"-->
-<!--                                android:layout_width="0dp"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:layout_weight="1">-->
-
-
-<!--                            </RelativeLayout>-->
-
-<!--                            <RelativeLayout-->
-<!--                                android:id="@+id/relativeLayout10"-->
-<!--                                android:layout_width="0dp"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:layout_weight="1">-->
-
-
-<!--                            </RelativeLayout>-->
-
-<!--                        </LinearLayout>-->
-<!--                    </RelativeLayout>-->
-<!--                </LinearLayout>-->
-<!--            </RelativeLayout>-->
-<!--        </ScrollView>-->
-<!--    </LinearLayout>-->
-
-<!--                <Button-->
-<!--                    android:id="@+id/ActivityCalan_BTN_addPill"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="add pill"-->
-<!--                    android:textColor="@color/black"-->
-<!--                    android:background="@null"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:layout_marginBottom="30dp"-->
-<!--                    android:fontFamily="@font/storytime"-->
-<!--                    android:textSize="20sp"/>-->
-
-<!--                <Button-->
-<!--                    android:id="@+id/ActivityCalan_BTN_check"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="for check"-->
-<!--                    android:textColor="@color/black"-->
-<!--                    android:background="@null"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:layout_marginBottom="30dp"-->
-<!--                    android:fontFamily="@font/storytime"-->
-<!--                    android:textSize="20sp"/>-->
-
-
-////////////////////////////////
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:orientation="horizontal">-->
-
-<!--            <Button-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="back"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textStyle="bold"-->
-<!--                android:onClick="previousWeekAction"-->
-<!--                android:textSize="20sp"/>-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/monthYearTV"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_weight="2"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Feb 2021"-->
-<!--                android:textSize="20sp"-->
-<!--                android:textAlignment="center"-->
-<!--                android:textColor="@color/black"/>-->
-
-<!--            <Button-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="forward"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:background="@null"-->
-<!--                android:textStyle="bold"-->
-<!--                android:onClick="nextWeekAction"-->
-<!--                android:textSize="20sp"/>-->
-
-
-
-<!--        </LinearLayout>-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_weight="3"-->
-<!--            android:orientation="horizontal">-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/calander_LBL_sunday"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="SUN"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textAlignment="center"-->
-<!--                android:textSize="16sp"/>-->
-
-<!--            <TextView-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="MON"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textAlignment="center"-->
-<!--                android:textSize="16sp"/>-->
-
-<!--            <TextView-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="TUE"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textAlignment="center"-->
-<!--                android:textSize="16sp"/>-->
-
-<!--            <TextView-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="WED"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textAlignment="center"-->
-<!--                android:textSize="16sp"/>-->
-
-<!--            <TextView-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="THUR"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textAlignment="center"-->
-<!--                android:textSize="16sp"/>-->
-
-<!--            <TextView-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="FRI"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textAlignment="center"-->
-<!--                android:textSize="16sp"/>-->
-
-<!--            <TextView-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="SAT"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textAlignment="center"-->
-<!--                android:textSize="16sp"/>-->
-
-<!--        </LinearLayout>-->
-
-<!--        <Button-->
-<!--            android:id="@+id/ActivityCalan_BTN_addPill"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="add pill"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:background="@null"-->
-<!--            android:textStyle="bold"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_marginBottom="30dp"-->
-<!--            android:fontFamily="@font/storytime"-->
-<!--            android:textSize="20sp"/>-->
-
-<!--        <Button-->
-<!--            android:id="@+id/ActivityCalan_BTN_check"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="for check"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:background="@null"-->
-<!--            android:textStyle="bold"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_marginBottom="30dp"-->
-<!--            android:fontFamily="@font/storytime"-->
-<!--            android:textSize="20sp"/>-->
-
-
-
-
-
-<!--        &lt;!&ndash;    <androidx.recyclerview.widget.RecyclerView&ndash;&gt;-->
-<!--        &lt;!&ndash;        android:id="@+id/calendarRecyclerView"&ndash;&gt;-->
-<!--        &lt;!&ndash;        android:layout_width="match_parent"&ndash;&gt;-->
-<!--        &lt;!&ndash;        android:layout_height="0dp"&ndash;&gt;-->
-<!--        &lt;!&ndash;        android:layout_weight="1"/>&ndash;&gt;-->
-
-
-
-<!--    </LinearLayout>-->
-
-
-
-<!--    <Button-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="New Event"-->
-<!--        android:textColor="@color/black"-->
-<!--        android:background="@null"-->
-<!--        android:textStyle="bold"-->
-<!--        android:onClick="newEventAction"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:textSize="20sp"/>-->
-
-<!--    <ListView-->
-<!--        android:id="@+id/eventListView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="4"/>-->
 
 
 </LinearLayout>

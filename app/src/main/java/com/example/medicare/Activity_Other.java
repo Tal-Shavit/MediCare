@@ -65,12 +65,12 @@ public class Activity_Other extends AppCompatActivity {
         panel_col = findViewById(R.id.panel_col);
     };
 
-    private void openLoginScreen(int imgID) {
+    /*private void openLoginScreen(int imgID) {
         Intent myIntent = new Intent(this, Activity_newUser.class);
         myIntent.putExtra(Activity_newUser.KEY_IMG_NAME,imgID);
         startActivity(myIntent);
         finish();
-    }
+    }*/
 
     public void insertImageView() {
         for (int i = 0; i < (drawableOthers.length)/3; i++) {//rows
@@ -106,7 +106,7 @@ public class Activity_Other extends AppCompatActivity {
             imageButtons[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    openLoginScreen(drawableOthers[finalI]);
+                    //openLoginScreen(drawableOthers[finalI]);
                 }
             });
         }

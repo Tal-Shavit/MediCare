@@ -10,7 +10,38 @@
         <item>Red</item>
     </string-array>
 
+    <string-array name="pillsList">
+        <item>Acamoll</item>
+        <item>Advill</item>
+        <item>Nerosinl</item>
+        <item>Nurofenl</item>
+    </string-array>
+
     <string-array name="hoursList">
+        <item>00:00</item>
+        <item>00:15</item>
+        <item>00:30</item>
+        <item>00:45</item>
+        <item>01:00</item>
+        <item>01:15</item>
+        <item>01:30</item>
+        <item>01:45</item>
+        <item>02:00</item>
+        <item>02:15</item>
+        <item>02:30</item>
+        <item>02:45</item>
+        <item>03:00</item>
+        <item>03:15</item>
+        <item>03:30</item>
+        <item>03:45</item>
+        <item>04:00</item>
+        <item>04:15</item>
+        <item>04:30</item>
+        <item>04:45</item>
+        <item>05:00</item>
+        <item>05:15</item>
+        <item>05:30</item>
+        <item>05:45</item>
         <item>06:00</item>
         <item>06:15</item>
         <item>06:30</item>
@@ -83,30 +114,6 @@
         <item>23:15</item>
         <item>23:30</item>
         <item>23:45</item>
-        <item>00:00</item>
-        <item>00:15</item>
-        <item>00:30</item>
-        <item>00:45</item>
-        <item>01:00</item>
-        <item>01:15</item>
-        <item>01:30</item>
-        <item>01:45</item>
-        <item>02:00</item>
-        <item>02:15</item>
-        <item>02:30</item>
-        <item>02:45</item>
-        <item>03:00</item>
-        <item>03:15</item>
-        <item>03:30</item>
-        <item>03:45</item>
-        <item>04:00</item>
-        <item>04:15</item>
-        <item>04:30</item>
-        <item>04:45</item>
-        <item>05:00</item>
-        <item>05:15</item>
-        <item>05:30</item>
-        <item>05:45</item>
 
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->

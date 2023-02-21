@@ -8,6 +8,7 @@
     tools:context=".Activity_AddPill">
 
     <LinearLayout
+        android:id="@+id/upLinear"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -21,7 +22,7 @@
             android:textAllCaps="true"
             android:textSize="60sp"
             android:textColor="@color/black"
-            android:fontFamily="@font/storytime"
+            android:fontFamily="@font/candaral"
             android:layout_gravity="center"
             />
 
@@ -35,37 +36,31 @@
         android:gravity="center"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pill Name"
-                android:textSize="35sp"
+                android:text="PILL NAME"
+                android:textSize="25sp"
                 android:textColor="@color/black"
-                android:fontFamily="@font/storytime"/>
+                android:fontFamily="@font/candaral"
+                android:textStyle="bold"/>
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="10dp"/>
+            <Spinner
+                android:id="@+id/spinnerForPill"
+                android:layout_width="120dp"
+                android:layout_height="70dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@android:drawable/btn_dropdown"
+                />
 
-        <Spinner
-            android:id="@+id/spinnerForPill"
-            android:layout_width="120dp"
-            android:layout_height="70dp"
-            android:layout_marginHorizontal="20dp"
-            android:background="@android:drawable/btn_dropdown"
-            />
+        </LinearLayout>
 
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Days To Take The Pill"
-            android:textSize="35sp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/storytime"/>
 
         <View
             android:layout_width="wrap_content"
@@ -87,11 +82,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="SUN"
-                    android:textSize="25sp"
+                    android:textSize="22sp"
                     android:textColor="@color/black"
-                    android:fontFamily="@font/storytime"/>
+                    android:fontFamily="@font/candara"/>
 
                 <CheckBox
+                    android:id="@+id/checkboxSun"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -109,15 +105,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="MON"
-                    android:textSize="25sp"
+                    android:textSize="22sp"
                     android:textColor="@color/black"
-                    android:fontFamily="@font/storytime"/>
+                    android:fontFamily="@font/candara"/>
 
                 <CheckBox
+                    android:id="@+id/checkboxMon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-            </LinearLayout> <LinearLayout
+            </LinearLayout>
+
+            <View
+                android:layout_width="5dp"
+                android:layout_height="0dp"/>
+
+            <LinearLayout
             android:layout_width="50dp"
             android:layout_height="90dp"
             android:orientation="vertical"
@@ -127,15 +130,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TUE"
-                android:textSize="25sp"
+                android:textSize="22sp"
                 android:textColor="@color/black"
-                android:fontFamily="@font/storytime"/>
+                android:fontFamily="@font/candara"/>
 
             <CheckBox
+                android:id="@+id/checkboxTue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-        </LinearLayout> <LinearLayout
+        </LinearLayout>
+
+            <LinearLayout
             android:layout_width="50dp"
             android:layout_height="90dp"
             android:orientation="vertical"
@@ -145,15 +151,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="WED"
-                android:textSize="25sp"
+                android:textSize="22sp"
                 android:textColor="@color/black"
-                android:fontFamily="@font/storytime"/>
+                android:fontFamily="@font/candara"/>
 
             <CheckBox
+                android:id="@+id/checkboxWed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-        </LinearLayout> <LinearLayout
+        </LinearLayout>
+            <LinearLayout
             android:layout_width="50dp"
             android:layout_height="90dp"
             android:orientation="vertical"
@@ -163,15 +171,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="THU"
-                android:textSize="25sp"
+                android:textSize="22sp"
                 android:textColor="@color/black"
-                android:fontFamily="@font/storytime"/>
+                android:fontFamily="@font/candara"/>
 
             <CheckBox
+                android:id="@+id/checkboxThu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-        </LinearLayout> <LinearLayout
+        </LinearLayout>
+            <LinearLayout
             android:layout_width="50dp"
             android:layout_height="90dp"
             android:orientation="vertical"
@@ -181,15 +191,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="FRI"
-                android:textSize="25sp"
+                android:textSize="22sp"
                 android:textColor="@color/black"
-                android:fontFamily="@font/storytime"/>
+                android:fontFamily="@font/candara"/>
 
             <CheckBox
+                android:id="@+id/checkboxFri"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-        </LinearLayout> <LinearLayout
+        </LinearLayout>
+
+            <LinearLayout
             android:layout_width="50dp"
             android:layout_height="90dp"
             android:orientation="vertical"
@@ -199,11 +212,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="SAT"
-                android:textSize="25sp"
+                android:textSize="22sp"
                 android:textColor="@color/black"
-                android:fontFamily="@font/storytime"/>
+                android:fontFamily="@font/candara"/>
 
             <CheckBox
+                android:id="@+id/checkboxSat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -221,11 +235,49 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hour"
-                android:textSize="35sp"
+                android:text="COUNT"
+                android:textSize="25sp"
                 android:textColor="@color/black"
-                android:fontFamily="@font/storytime"/>
+                android:fontFamily="@font/candaral"
+                android:textStyle="bold"/>
 
+            <View
+                android:layout_width="10dp"
+                android:layout_height="10dp"/>
+
+            <EditText
+                android:id="@+id/addpill_TXT_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/candaral"
+                android:hint="COUNT OF PILL"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <View
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/candaral"
+                android:text="HOUR"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/spinnerForHour"
@@ -242,20 +294,22 @@
             android:layout_height="10dp"/>
 
         <LinearLayout
-            android:layout_width="300dp"
-            android:layout_height="180dp"
+            android:layout_width="250dp"
+            android:layout_height="200dp"
             android:background="@drawable/shapelogin"
             android:orientation="vertical"
+            android:layout_marginTop="10dp"
             android:gravity="center_horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add Picture"
+                android:text="ADD PICTURE"
                 android:textSize="35sp"
                 android:textColor="@color/black"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/storytime"/>
+                android:fontFamily="@font/candaral"
+                android:textStyle="bold"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -265,8 +319,8 @@
 
                 <ImageButton
                     android:id="@+id/pill_IBT_Camera"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:background="@drawable/shapelogin"
                     android:scaleType="fitCenter"
                     android:src="@drawable/camera" />
@@ -275,13 +329,15 @@
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"/>
 
-                <ImageButton
-                    android:id="@+id/pill_IBT_Gallery"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/gallery"
-                    android:background="@drawable/shapelogin"/>
+
+                    <ImageButton
+                        android:id="@+id/pill_IBT_Gallery"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/gallery"
+                        android:background="@drawable/shapelogin"/>
+
 
             </LinearLayout>
 
@@ -290,17 +346,19 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="10dp"/>
+            android:layout_height="15dp"/>
 
         <Button
             android:id="@+id/newPill_BTN_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/lightGreen"
-            android:fontFamily="@font/storytime"
+            android:background="@drawable/shapebutton"
+            android:fontFamily="@font/candaral"
+            android:textStyle="bold"
             android:text="confirm"
             android:textColor="@color/black"
-            android:textSize="30sp" />
+            android:layout_marginTop="10dp"
+            android:textSize="22sp" />
 
     </LinearLayout>
 

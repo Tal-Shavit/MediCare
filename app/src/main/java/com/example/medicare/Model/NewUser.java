@@ -1,35 +1,65 @@
 package com.example.medicare.Model;
 
+import android.util.Log;
 import android.widget.ImageView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class NewUser {
 
-    private String firstName = "";
-    private String lastName = "";
+    private String name = "";
     private String email = "";
-    private String password = "";
-
     private ImageView imageView;
+    private int img;
+    private String colorSystem = "";
+
+
 
     public NewUser() {
-
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getColorSystem() {
+        return colorSystem;
     }
 
-    public NewUser setFirstName(String firstName) {
-        this.firstName = firstName;
+    public NewUser setColorSystem(String colorSystem) {
+        this.colorSystem = colorSystem;
         return this;
     }
 
-    public String getLastName() {
-        return lastName;
+    public int getImg() {
+        return img;
     }
 
-    public NewUser setLastName(String lastName) {
-        this.lastName = lastName;
+    public NewUser setImg(int img) {
+        this.img = img;
+        return this;
+    }
+
+    private ArrayList<Pill_Item> allPillItems = new ArrayList<>();
+
+
+    public String getName() {
+        return name;
+    }
+
+    public NewUser setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public ArrayList<Pill_Item> getAllPillItems() {
+        return allPillItems;
+    }
+
+    public NewUser setAllPillItems(ArrayList<Pill_Item> allPillItems) {
+        this.allPillItems = allPillItems;
         return this;
     }
 
@@ -42,15 +72,6 @@ public class NewUser {
         return this;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public NewUser setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
     public ImageView getImageView() {
         return imageView;
     }
@@ -58,5 +79,20 @@ public class NewUser {
     public NewUser setImageView(ImageView imageView) {
         this.imageView = imageView;
         return this;
+    }
+
+    public void addPill(Pill_Item pill_item){
+        allPillItems.add(pill_item);
+    }
+
+    /**
+     * for user that already exist
+     * or creating a new user
+     */
+    public void loadToDataBase(){
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference ref = db.getReference("Users");
+        ref.child(userId).setValue(this);
     }
 }
