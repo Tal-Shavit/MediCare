@@ -90,7 +90,7 @@
         android:layout_centerInParent="true"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/calander_MBTN_sunday"
+        android:id="@+id/calander_MBTN_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="DELETE"

@@ -19,9 +19,18 @@ public class NewUser {
     private int img;
     private String colorSystem = "";
 
-
+    private int count = 0;
 
     public NewUser() {
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public NewUser setCount(int count) {
+        this.count = count;
+        return this;
     }
 
     public String getColorSystem() {
@@ -83,6 +92,14 @@ public class NewUser {
 
     public void addPill(Pill_Item pill_item){
         allPillItems.add(pill_item);
+    }
+
+    public void removePill(Pill_Item pill_item){
+        for (int i = 0; i < allPillItems.size(); i++) {
+            if(allPillItems.get(i).equals(pill_item)){
+                allPillItems.remove(pill_item);
+            }
+        }
     }
 
     /**

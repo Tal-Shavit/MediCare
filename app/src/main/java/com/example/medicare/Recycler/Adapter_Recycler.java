@@ -8,9 +8,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.medicare.Model.NewUser;
 import com.example.medicare.Model.Pill_Item;
 import com.example.medicare.R;
 import com.example.medicare.Interface.RecyclerViewInterface;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -21,10 +25,14 @@ public class Adapter_Recycler extends RecyclerView.Adapter<MyViewHolder> {
     private ArrayList<Pill_Item> pillItemArrayList;
     private Pill_Item pill_item;
 
+    private NewUser newUser;
+
     public Adapter_Recycler(Context context, ArrayList<Pill_Item> pillItemArrayList, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
         this.pillItemArrayList = pillItemArrayList;
         this.recyclerViewInterface = recyclerViewInterface;
+
+
     }
 
     @NonNull

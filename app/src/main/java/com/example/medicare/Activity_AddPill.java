@@ -7,9 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -21,13 +25,16 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.medicare.Model.NewUser;
 import com.example.medicare.Model.Pill_Item;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,12 +44,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Activity_AddPill extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private static final int ImageBack = 1;
-    private StorageReference Folder;
+    //private static final int ImageBack = 1;
+    private StorageReference storageReference;
 
     private Button newPill_BTN_confirm;
     private ImageButton pill_IBT_Camera;
@@ -59,41 +67,98 @@ public class Activity_AddPill extends AppCompatActivity implements AdapterView.O
     private CheckBox checkboxThu;
     private CheckBox checkboxFri;
     private CheckBox checkboxSat;
-
-    private Spinner spinnerForPill;
+    private TextView addPill_LBL_search;
+   // private Spinner spinnerForPill;
     private Spinner spinnerForHour;
-
     private LinearLayout upLinear;
-
     private NewUser newUser;
     private Pill_Item pill_item;
-
     private Uri selectedImage;
-
+    private int countOfPills;
+    private ArrayList<String> arrayListAllPill;
+    private Dialog dialog;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReferenceDrugs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_pill);
 
-        Folder = FirebaseStorage.getInstance().getReference().child("ImageFolder");
+        //Folder = FirebaseStorage.getInstance().getReference().child("ImageFolder");
         loadData();
+        initArrayListDrugs();
         findViews();
         initViews();
     }
 
     private void loadData(){
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.child(userID).get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
-                newUser = task.getResult().getValue(NewUser.class);
-                changeColorSystem(newUser.getColorSystem());
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference();//"Users"
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child("Users").child(userID).exists()){
+                    databaseReference.child("Users").child(userID).get().addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            newUser = task.getResult().getValue(NewUser.class);
+                            changeColorSystem(newUser.getColorSystem());
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
 
     private void initViews() {
+        addPill_LBL_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog = new Dialog(Activity_AddPill.this);
+                dialog.setContentView(R.layout.dialog_searchig_bar);
+                dialog.getWindow().setLayout(650,800);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.setCancelable(false);
+                dialog.show();
+
+                EditText searchBar_TXT_serch = dialog.findViewById(R.id.searchBar_TXT_serch);
+                ListView searchBar_LISTV_listView = dialog.findViewById(R.id.searchBar_LISTV_listView);
+
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Activity_AddPill.this, android.R.layout.simple_list_item_1, arrayListAllPill);
+                searchBar_LISTV_listView.setAdapter(arrayAdapter);
+                searchBar_TXT_serch.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        arrayAdapter.getFilter().filter(s);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+
+                searchBar_LISTV_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        addPill_LBL_search.setText(arrayAdapter.getItem(position));
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+
         newPill_BTN_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,10 +167,15 @@ public class Activity_AddPill extends AppCompatActivity implements AdapterView.O
                 ref.child(userID).get().addOnCompleteListener(task -> {
                    if(task.isSuccessful()){
                        newUser = task.getResult().getValue(NewUser.class);
-                       int count = Integer.parseInt(addpill_TXT_count.getText()+"");
-                       pill_item = new Pill_Item();
-                       pill_item.setNamePill(spinnerForPill.getSelectedItem()+"")
-                               .setCountToTake(count)
+                       if(addpill_TXT_count.getText().toString().equals("")){
+                           addpill_TXT_count.setHint("FILL COUNT!");
+                       }
+                       else{
+                           countOfPills = Integer.parseInt(addpill_TXT_count.getText()+"");
+                       }
+                       pill_item = new Pill_Item();//spinnerForPill.getSelectedItem()+
+                       pill_item.setNamePill("")
+                               .setCountToTake(countOfPills)
                                .setTimeToTake(pill_item.convertStringToTime(spinnerForHour.getSelectedItem().toString()).toString())
                                .setSunday(checkboxSun.isChecked())
                                .setMonday(checkboxMon.isChecked()).setTuesday(checkboxTue.isChecked())
@@ -115,7 +185,9 @@ public class Activity_AddPill extends AppCompatActivity implements AdapterView.O
                        newUser.loadToDataBase();
                    }
                 });
-                backCalanderScreen();
+                if(!addpill_TXT_count.getText().toString().equals("")){
+                    backCalanderScreen();
+                }
             }
         });
 
@@ -134,9 +206,9 @@ public class Activity_AddPill extends AppCompatActivity implements AdapterView.O
                 /*Intent intent = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent,3);
                 showImageDialog();*/
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                /*Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
-                startActivityForResult(intent,3);
+                startActivityForResult(intent,3);*/
             }
         });
 
@@ -144,12 +216,69 @@ public class Activity_AddPill extends AppCompatActivity implements AdapterView.O
         initSpinner();
     }
 
+    private void initArrayListDrugs() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReferenceDrugs = firebaseDatabase.getReference("Drugs");
+        arrayListAllPill = new ArrayList<>();
+
+        databaseReferenceDrugs.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    //arrayListAllPill.clear();
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                        Pill_Item pill_item1 = dataSnapshot.getValue(Pill_Item.class);
+                        //Log.d("LALA", arrayListAllPill.size()+"");
+                        arrayListAllPill.add(pill_item1.getNamePill()+"");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+        /*databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                pill_item = snapshot.getValue(Pill_Item.class);
+                arrayListAllPill.add(pill_item.getNamePill()+"");
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });*/
+
+
+
+    }
+
 
     private void initSpinner() {
-        ArrayAdapter<CharSequence> adapterPills = ArrayAdapter.createFromResource(this, R.array.pillsList,android.R.layout.simple_spinner_item);
+        /*ArrayAdapter<CharSequence> adapterPills = ArrayAdapter.createFromResource(this, R.array.pillsList,android.R.layout.simple_spinner_item);
         adapterPills.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerForPill.setAdapter(adapterPills);
-        spinnerForPill.setOnItemSelectedListener(this);
+        spinnerForPill.setOnItemSelectedListener(this);*/
 
         ArrayAdapter<CharSequence> adapterHours = ArrayAdapter.createFromResource(this, R.array.hoursList,android.R.layout.simple_spinner_item);
         adapterHours.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -161,7 +290,7 @@ public class Activity_AddPill extends AppCompatActivity implements AdapterView.O
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 3){
+        /*if(requestCode == 3){
             if(resultCode== RESULT_OK){
                 selectedImage = data.getData();
                 StorageReference imageName = Folder.child(spinnerForPill.getSelectedItem()+"");
@@ -172,7 +301,7 @@ public class Activity_AddPill extends AppCompatActivity implements AdapterView.O
                     }
                 });
             }
-        }
+        }*/
 
         if(requestCode == 100){
             Bitmap bitmap= (Bitmap) data.getExtras().get("data");
@@ -210,7 +339,8 @@ public class Activity_AddPill extends AppCompatActivity implements AdapterView.O
         newPill_BTN_confirm = findViewById(R.id.newPill_BTN_confirm);
         pill_IBT_Camera = findViewById(R.id.pill_IBT_Camera);
         pill_IBT_Gallery = findViewById(R.id.pill_IBT_Gallery);
-        spinnerForPill = findViewById(R.id.spinnerForPill);
+        //spinnerForPill = findViewById(R.id.spinnerForPill);
+        addPill_LBL_search = findViewById(R.id.addPill_LBL_search);
         spinnerForHour = findViewById(R.id.spinnerForHour);
         addpill_TXT_count = findViewById(R.id.addpill_TXT_count);
         checkboxSun = findViewById(R.id.checkboxSun);
@@ -225,14 +355,13 @@ public class Activity_AddPill extends AppCompatActivity implements AdapterView.O
 
 
     private void backCalanderScreen() {
-        //Intent myIntent = new Intent(this, Activity_Calander.class);
-        //startActivity(myIntent);
+        loadData();
         finish();
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-        String time = adapterView.getItemAtPosition(position).toString();
+        //String time = adapterView.getItemAtPosition(position).toString();
     }
 
     @Override

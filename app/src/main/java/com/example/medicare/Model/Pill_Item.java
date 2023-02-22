@@ -10,6 +10,7 @@ public class Pill_Item {
 
     private String namePill;
     private String timeToTake;
+    private int countToTake;
     private Boolean sunday;
     private Boolean monday;
     private Boolean tuesday;
@@ -17,7 +18,7 @@ public class Pill_Item {
     private Boolean thursday;
     private Boolean friday;
     private Boolean saturday;
-    private int countToTake;
+
     //private ImageView imgPill;
 
     public Pill_Item() {

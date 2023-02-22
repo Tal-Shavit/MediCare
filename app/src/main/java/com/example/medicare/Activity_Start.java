@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.medicare.Model.NewUser;
 import com.firebase.ui.auth.AuthUI;
@@ -41,6 +42,7 @@ public class Activity_Start extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
+
         if (user == null){
             login();
         }else{
@@ -49,7 +51,6 @@ public class Activity_Start extends AppCompatActivity {
             String email = user.getEmail();
             openWeeklyCalender();
         }
-
     }
 
     // See: https://developer.android.com/training/basics/intents/result
@@ -73,7 +74,9 @@ public class Activity_Start extends AppCompatActivity {
                if(!snapshot.child(mAuth.getCurrentUser().getUid()).exists()){
                    NewUser newUser = new NewUser();
                    newUser.setName(mAuth.getCurrentUser().getDisplayName())
-                           .setEmail(mAuth.getCurrentUser().getEmail());
+                           .setEmail(mAuth.getCurrentUser().getEmail())
+                          .setImg(R.drawable.other2)
+                           .setColorSystem("Green").setCount(0);
                    newUser.loadToDataBase();
                }
             }

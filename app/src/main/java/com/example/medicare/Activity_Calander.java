@@ -2,7 +2,11 @@ package com.example.medicare;
 
 import static android.text.TextUtils.split;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -18,17 +22,26 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.medicare.Interface.RecyclerViewInterface;
 import com.example.medicare.Model.NewUser;
 import com.example.medicare.Model.Pill_Item;
+import com.example.medicare.Recycler.Adapter_Recycler;
 import com.example.medicare.Recycler.GridAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
@@ -36,7 +49,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Activity_Calander extends AppCompatActivity {
+public class Activity_Calander extends AppCompatActivity{
 
     private TextView calander_LBL_name;
     private TextView calander_LBL_day;
@@ -51,12 +64,9 @@ public class Activity_Calander extends AppCompatActivity {
     private MaterialButton calander_MBTN_friday;
     private MaterialButton calander_MBTN_saturday;
     private TextView calander_TXT_day;
-
     private GridAdapter gridAdapter;
     private GridView gridView;
-
     private LinearLayout upLinear;
-
     private SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
     private Date d = new Date();
     private Calendar calendar;
@@ -64,16 +74,14 @@ public class Activity_Calander extends AppCompatActivity {
     private int dayInt;
     private int month;
     private int dayOfWeekNum;
-
     private ImageButton Dialog_IMGB_chatacter;
     private Spinner dialog_SPR_color;
     private Button dialog_BTN_confirm;
     private Button dialog_BTN_logout;
-
     private NewUser newUser;
     private ArrayList<Pill_Item>[] allPillItems2;
-
     private String color;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +91,9 @@ public class Activity_Calander extends AppCompatActivity {
         dayName = sdf.format(d);
         calendar = Calendar.getInstance();
         dayInt = calendar.get(Calendar.DAY_OF_MONTH);
-        month = calendar.get(Calendar.MONTH)+1;
+        month = calendar.get(Calendar.MONTH) + 1;
         dayOfWeekNum = calendar.get(Calendar.DAY_OF_WEEK);
+
 
         initLoadData();
         findViews();
@@ -93,58 +102,115 @@ public class Activity_Calander extends AppCompatActivity {
 
     private void initLoadData() {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.child(userID).get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                newUser = task.getResult().getValue(NewUser.class);
-                female_IMG_image.setImageResource(newUser.getImg());
-                changeColorSystem(newUser.getColorSystem());
-                calander_TXT_day.setText(dayName.toUpperCase());
-                if(dayOfWeekNum==1){
-                    displayPillPerDaySunday();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference();//"Users"
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child("Users").child(userID).exists()){
+                    databaseReference.child("Users").child(userID).get().addOnCompleteListener(task -> {
+                       if(task.isSuccessful()){
+                           newUser = task.getResult().getValue(NewUser.class);
+                           female_IMG_image.setImageResource(newUser.getImg());
+                           changeColorSystem(newUser.getColorSystem());
+                           calander_TXT_day.setText(dayName.toUpperCase());
+                           if(newUser.getCount()==0){
+                               showDialog();
+                               newUser.setCount(1);
+                               newUser.loadToDataBase();
+                           }
+                           if (dayOfWeekNum == 1) {
+                               displayPillPerDaySunday();
+                           }
+                           if (dayOfWeekNum == 2) {
+                               displayPillPerDayMonday();
+                           }
+                           if (dayOfWeekNum == 3) {
+                               displayPillPerDayTueday();
+                           }
+                           if (dayOfWeekNum == 4) {
+                               displayPillPerDayWednesday();
+                           }
+                           if (dayOfWeekNum == 5) {
+                               displayPillPerDayThurday();
+                           }
+                           if (dayOfWeekNum == 6) {
+                               displayPillPerDayFriday();
+                           }
+                           if (dayOfWeekNum == 7) {
+                               displayPillPerDaySaturday();
+                           }
+
+                       }
+                    });
                 }
-                if(dayOfWeekNum==2){
-                    displayPillPerDayMonday();
-                }
-                if(dayOfWeekNum==3){
-                    displayPillPerDayTueday();
-                }
-                if(dayOfWeekNum==4){
-                    displayPillPerDayWednesday();
-                }
-                if(dayOfWeekNum==5){
-                    displayPillPerDayThurday();
-                }
-                if(dayOfWeekNum==6){
-                    displayPillPerDayFriday();
-                }
-                if(dayOfWeekNum==7){
-                    displayPillPerDaySaturday();
-                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
 
     private void loadData() {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.child(userID).get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
-                newUser = task.getResult().getValue(NewUser.class);
-                female_IMG_image.setImageResource(newUser.getImg());
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference();//"Users"
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child("Users").child(userID).exists()){
+                    databaseReference.child("Users").child(userID).get().addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            newUser = task.getResult().getValue(NewUser.class);
+                            female_IMG_image.setImageResource(newUser.getImg());
+                            changeColorSystem(newUser.getColorSystem());
+                            Dialog_IMGB_chatacter.setImageResource(newUser.getImg());
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void loadDataDisplayCalendar() {
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference();//"Users"
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child("Users").child(userID).exists()){
+                    databaseReference.child("Users").child(userID).get().addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            newUser = task.getResult().getValue(NewUser.class);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
 
     private void initViews() {
         calander_LBL_day.setText(dayName);
-        calander_LBL_intDayMonth.setText(dayInt+"."+month);
+        calander_LBL_intDayMonth.setText(dayInt + "." + month);
         calander_LBL_name.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         ActivityCalan_BTN_addPill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openNewPillScreen();
-                loadData();
+                loadDataDisplayCalendar();
             }
         });
 
@@ -221,34 +287,49 @@ public class Activity_Calander extends AppCompatActivity {
         dialog_SPR_color = dialog.findViewById(R.id.dialog_SPR_color);
         dialog_BTN_confirm = dialog.findViewById(R.id.dialog_BTN_confirm);
         Dialog_IMGB_chatacter = dialog.findViewById(R.id.Dialog_IMGB_chatacter);
-
-        dialog.show();
         Dialog_IMGB_chatacter.setImageResource(newUser.getImg());
+        dialog.show();
+
         Dialog_IMGB_chatacter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openCharacterScreen();
             }
-        });
 
+        });
         initSpinner();
+
 
         dialog_BTN_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadData();
                 String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-                ref.child(userID).get().addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        newUser = task.getResult().getValue(NewUser.class);
-                        newUser.setColorSystem(color);
-                        newUser.loadToDataBase();
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference databaseReference = firebaseDatabase.getReference();//"Users"
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.child("Users").child(userID).exists()){
+                            databaseReference.child("Users").child(userID).get().addOnCompleteListener(task -> {
+                                if(task.isSuccessful()){
+                                    newUser = task.getResult().getValue(NewUser.class);
+                                    Dialog_IMGB_chatacter.setImageResource(newUser.getImg());
+                                    newUser.setColorSystem(color);
+                                    newUser.loadToDataBase();
+                                }
+                            });
+                        }
+                        loadData();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
                     }
                 });
 
-                changeColorSystem(color);
                 dialog.dismiss();
+
             }
         });
 
@@ -256,34 +337,36 @@ public class Activity_Calander extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
+                dialog.dismiss();
                 openStartScreen();
             }
         });
+        loadDataDisplayCalendar();
     }
 
-    public void changeColorSystem(String color){
-        if(color.equals("Green")){
+    public void changeColorSystem(String color) {
+        if (color.equals("Green")) {
             upLinear.setBackgroundColor(getResources().getColor(R.color.lightGreen));
         }
-        if(color.equals("Blue")){
+        if (color.equals("Blue")) {
             upLinear.setBackgroundColor(getResources().getColor(R.color.lightBlue));
         }
-        if(color.equals("Pink")){
+        if (color.equals("Pink")) {
             upLinear.setBackgroundColor(getResources().getColor(R.color.lightPink));
         }
-        if(color.equals("Orange")){
+        if (color.equals("Orange")) {
             upLinear.setBackgroundColor(getResources().getColor(R.color.lightOrange));
         }
-        if(color.equals("Yellow")){
+        if (color.equals("Yellow")) {
             upLinear.setBackgroundColor(getResources().getColor(R.color.lightYellow));
         }
-        if(color.equals("Red")){
+        if (color.equals("Red")) {
             upLinear.setBackgroundColor(getResources().getColor(R.color.lightRed));
         }
     }
 
-    private void initSpinner(){
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.colorsList,android.R.layout.simple_spinner_item);
+    private void initSpinner() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.colorsList, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dialog_SPR_color.setAdapter(adapter);
         dialog_SPR_color.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -313,101 +396,109 @@ public class Activity_Calander extends AppCompatActivity {
     private void openNewPillScreen() {
         Intent myIntent = new Intent(this, Activity_AddPill.class);
         startActivity(myIntent);
+        loadDataDisplayCalendar();
     }
 
-    public void displayPillPerDaySunday(){
+    public void displayPillPerDaySunday() {
+        loadDataDisplayCalendar();
         ArrayList<Pill_Item> allPillItems = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
-            if(newUser.getAllPillItems().get(i).getSunday()){
+            if (newUser.getAllPillItems().get(i).getSunday()) {
                 allPillItems.add(newUser.getAllPillItems().get(i));
             }
         }
-        splitArrayByHours(allPillItems);
+        splitArrayByHours(allPillItems,1);
     }
 
-    public void displayPillPerDayMonday(){
+    public void displayPillPerDayMonday() {
+        loadDataDisplayCalendar();
         ArrayList<Pill_Item> allPillItemsMon = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
-            if(newUser.getAllPillItems().get(i).getMonday()){
+            if (newUser.getAllPillItems().get(i).getMonday()) {
                 allPillItemsMon.add(newUser.getAllPillItems().get(i));
             }
         }
-        splitArrayByHours(allPillItemsMon);
+        splitArrayByHours(allPillItemsMon,2);
     }
 
-    public void displayPillPerDayTueday(){
+    public void displayPillPerDayTueday() {
+        loadDataDisplayCalendar();
         ArrayList<Pill_Item> allPillItems = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
-            if(newUser.getAllPillItems().get(i).getTuesday()){
+            if (newUser.getAllPillItems().get(i).getTuesday()) {
                 allPillItems.add(newUser.getAllPillItems().get(i));
             }
         }
-        splitArrayByHours(allPillItems);
+        splitArrayByHours(allPillItems,3);
     }
 
-    public void displayPillPerDayWednesday(){
+    public void displayPillPerDayWednesday() {
+        loadDataDisplayCalendar();
         ArrayList<Pill_Item> allPillItems = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
-            if(newUser.getAllPillItems().get(i).getWednesday()){
+            if (newUser.getAllPillItems().get(i).getWednesday()) {
                 allPillItems.add(newUser.getAllPillItems().get(i));
             }
         }
-        splitArrayByHours(allPillItems);
+        splitArrayByHours(allPillItems,4);
     }
 
-    public void displayPillPerDayThurday(){
+    public void displayPillPerDayThurday() {
+        loadDataDisplayCalendar();
         ArrayList<Pill_Item> allPillItems = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
-            if(newUser.getAllPillItems().get(i).getThursday()){
+            if (newUser.getAllPillItems().get(i).getThursday()) {
                 allPillItems.add(newUser.getAllPillItems().get(i));
             }
         }
-        splitArrayByHours(allPillItems);
+        splitArrayByHours(allPillItems,5);
     }
 
-    public void displayPillPerDayFriday(){
+    public void displayPillPerDayFriday() {
+        loadDataDisplayCalendar();
         ArrayList<Pill_Item> allPillItems = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
-            if(newUser.getAllPillItems().get(i).getFriday()){
+            if (newUser.getAllPillItems().get(i).getFriday()) {
                 allPillItems.add(newUser.getAllPillItems().get(i));
             }
         }
-        splitArrayByHours(allPillItems);
+        splitArrayByHours(allPillItems,6);
     }
 
-    public void displayPillPerDaySaturday(){
+    public void displayPillPerDaySaturday() {
+        loadDataDisplayCalendar();
         ArrayList<Pill_Item> allPillItems = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
-            if(newUser.getAllPillItems().get(i).getSaturday()){
+            if (newUser.getAllPillItems().get(i).getSaturday()) {
                 allPillItems.add(newUser.getAllPillItems().get(i));
             }
         }
-        splitArrayByHours(allPillItems);
+        splitArrayByHours(allPillItems,7);
     }
 
-    public ArrayList<Pill_Item>[] splitArrayByHours(ArrayList<Pill_Item> pill_itemsDay){
+    public ArrayList<Pill_Item>[] splitArrayByHours(ArrayList<Pill_Item> pill_itemsDay, int day) {
         allPillItems2 = new ArrayList[6];
         for (int i = 0; i < 6; i++) {
             allPillItems2[i] = new ArrayList<Pill_Item>();
         }
         for (int i = 0; i < pill_itemsDay.size(); i++) {
-            if(LocalTime.parse(pill_itemsDay.get(i).getTimeToTake()).isBefore(LocalTime.of(4,00))){
+            if (LocalTime.parse(pill_itemsDay.get(i).getTimeToTake()).isBefore(LocalTime.of(4, 00))) {
                 allPillItems2[5].add(pill_itemsDay.get(i));//NIGHT
                 continue;
             }
-            if(LocalTime.parse(pill_itemsDay.get(i).getTimeToTake()).isBefore(LocalTime.of(7,00))){
+            if (LocalTime.parse(pill_itemsDay.get(i).getTimeToTake()).isBefore(LocalTime.of(7, 00))) {
                 allPillItems2[0].add(pill_itemsDay.get(i));//Early morning
                 continue;
             }
-            if(LocalTime.parse(pill_itemsDay.get(i).getTimeToTake()).isBefore(LocalTime.of(12,00))){
+            if (LocalTime.parse(pill_itemsDay.get(i).getTimeToTake()).isBefore(LocalTime.of(12, 00))) {
                 allPillItems2[1].add(pill_itemsDay.get(i));//Morning
                 continue;
             }
-            if(LocalTime.parse(pill_itemsDay.get(i).getTimeToTake()).isBefore(LocalTime.of(16,00))){
+            if (LocalTime.parse(pill_itemsDay.get(i).getTimeToTake()).isBefore(LocalTime.of(16, 00))) {
                 allPillItems2[2].add(pill_itemsDay.get(i));//noon
                 continue;
             }
-            if(LocalTime.parse(pill_itemsDay.get(i).getTimeToTake()).isBefore(LocalTime.of(19,00))){
+            if (LocalTime.parse(pill_itemsDay.get(i).getTimeToTake()).isBefore(LocalTime.of(19, 00))) {
                 allPillItems2[3].add(pill_itemsDay.get(i));//after noon
                 continue;
             }
@@ -432,27 +523,27 @@ public class Activity_Calander extends AppCompatActivity {
                 "NIGHT"//00:00-03:45
         };
 
-        gridAdapter = new GridAdapter(Activity_Calander.this, timeInDay, images, allPillItems2);
+        loadDataDisplayCalendar();
+        gridAdapter = new GridAdapter(Activity_Calander.this, timeInDay, images, allPillItems2, day);
         gridView.setAdapter(gridAdapter);
         return allPillItems2;
     }
 
-
-    private void findViews() {
-        calander_LBL_name = findViewById(R.id.calander_LBL_name);
-        calander_LBL_day = findViewById(R.id.calander_LBL_day);
-        calander_LBL_intDayMonth = findViewById(R.id.calander_LBL_intDayMonth);
-        female_IMG_image = findViewById(R.id.female_IMG_image);
-        ActivityCalan_BTN_addPill = findViewById(R.id.ActivityCalan_BTN_addPill);
-        upLinear = findViewById(R.id.upLinear);
-        gridView = findViewById(R.id.grid_view);
-        calander_MBTN_sunday = findViewById(R.id.calander_MBTN_sunday);
-        calander_MBTN_monday = findViewById(R.id.calander_MBTN_monday);
-        calander_MBTN_tuesday = findViewById(R.id.calander_MBTN_tueday);
-        calander_MBTN_wednesday = findViewById(R.id.calander_MBTN_wedensday);
-        calander_MBTN_thursday = findViewById(R.id.calander_MBTN_thursday);
-        calander_MBTN_friday = findViewById(R.id.calander_MBTN_friday);
-        calander_MBTN_saturday = findViewById(R.id.calander_MBTN_saturday);
-        calander_TXT_day = findViewById(R.id.calander_TXT_day);
-    }
+        private void findViews() {
+            calander_LBL_name = findViewById(R.id.calander_LBL_name);
+            calander_LBL_day = findViewById(R.id.calander_LBL_day);
+            calander_LBL_intDayMonth = findViewById(R.id.calander_LBL_intDayMonth);
+            female_IMG_image = findViewById(R.id.female_IMG_image);
+            ActivityCalan_BTN_addPill = findViewById(R.id.ActivityCalan_BTN_addPill);
+            upLinear = findViewById(R.id.upLinear);
+            gridView = findViewById(R.id.grid_view);
+            calander_MBTN_sunday = findViewById(R.id.calander_MBTN_sunday);
+            calander_MBTN_monday = findViewById(R.id.calander_MBTN_monday);
+            calander_MBTN_tuesday = findViewById(R.id.calander_MBTN_tueday);
+            calander_MBTN_wednesday = findViewById(R.id.calander_MBTN_wedensday);
+            calander_MBTN_thursday = findViewById(R.id.calander_MBTN_thursday);
+            calander_MBTN_friday = findViewById(R.id.calander_MBTN_friday);
+            calander_MBTN_saturday = findViewById(R.id.calander_MBTN_saturday);
+            calander_TXT_day = findViewById(R.id.calander_TXT_day);
+        }
 }

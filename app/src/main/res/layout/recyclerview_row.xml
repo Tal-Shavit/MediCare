@@ -38,7 +38,7 @@
         android:id="@+id/countToTake"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2 pills"
+        android:text=""
         android:textSize="18sp"
         android:textAllCaps="true"
         android:fontFamily="@font/candaral"

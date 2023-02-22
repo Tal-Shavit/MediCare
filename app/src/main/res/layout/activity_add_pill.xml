@@ -50,14 +50,37 @@
                 android:textColor="@color/black"
                 android:fontFamily="@font/candaral"
                 android:textStyle="bold"/>
+            
+            <RelativeLayout
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="20dp">
 
-            <Spinner
-                android:id="@+id/spinnerForPill"
-                android:layout_width="120dp"
-                android:layout_height="70dp"
-                android:layout_marginHorizontal="20dp"
-                android:background="@android:drawable/btn_dropdown"
-                />
+                <TextView
+                    android:id="@+id/addPill_LBL_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/gridleview"
+                    android:hint="SELECT PILL"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/candaral"
+                    android:textStyle="bold"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:drawableEnd="@drawable/ic_arrow"
+                    android:padding="10dp"/>
+            </RelativeLayout>
+
+           
+
+<!--            <Spinner-->
+<!--                android:id="@+id/spinnerForPill"-->
+<!--                android:layout_width="120dp"-->
+<!--                android:layout_height="70dp"-->
+<!--                android:layout_marginHorizontal="20dp"-->
+<!--                android:background="@android:drawable/btn_dropdown"-->
+<!--                >-->
+<!--                -->
+<!--            </Spinner>-->
 
         </LinearLayout>
 
