@@ -1,15 +1,12 @@
 package com.example.medicare.Model;
 
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class NewUser {
 
@@ -51,7 +48,7 @@ public class NewUser {
         return this;
     }
 
-    private ArrayList<Pill_Item> allPillItems = new ArrayList<>();
+    private ArrayList<PillItem> allPillItems = new ArrayList<>();
 
 
     public String getName() {
@@ -63,11 +60,11 @@ public class NewUser {
         return this;
     }
 
-    public ArrayList<Pill_Item> getAllPillItems() {
+    public ArrayList<PillItem> getAllPillItems() {
         return allPillItems;
     }
 
-    public NewUser setAllPillItems(ArrayList<Pill_Item> allPillItems) {
+    public NewUser setAllPillItems(ArrayList<PillItem> allPillItems) {
         this.allPillItems = allPillItems;
         return this;
     }
@@ -90,11 +87,11 @@ public class NewUser {
         return this;
     }
 
-    public void addPill(Pill_Item pill_item){
+    public void addPill(PillItem pill_item){
         allPillItems.add(pill_item);
     }
 
-    public void removePill(Pill_Item pill_item){
+    public void removePill(PillItem pill_item){
         for (int i = 0; i < allPillItems.size(); i++) {
             if(allPillItems.get(i).equals(pill_item)){
                 allPillItems.remove(pill_item);

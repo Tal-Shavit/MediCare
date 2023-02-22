@@ -1,12 +1,10 @@
 package com.example.medicare.Model;
 
-import android.widget.ImageView;
+import android.net.Uri;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 
-public class Pill_Item {
+public class PillItem {
 
     private String namePill;
     private String timeToTake;
@@ -18,26 +16,46 @@ public class Pill_Item {
     private Boolean thursday;
     private Boolean friday;
     private Boolean saturday;
+    private Uri imgUri;
+    //private Bitmap imgBitmapPill;
 
-    //private ImageView imgPill;
+    //private String imgBitmap;
 
-    public Pill_Item() {
+    public PillItem() {
     }
 
-//    public ImageView getImgPill() {
-//        return imgPill;
-//    }
-//
-//    public Pill_Item setImgPill(ImageView imgPill) {
-//        this.imgPill = imgPill;
-//        return this;
-//    }
+    public Uri getImgUri() {
+        return imgUri;
+    }
+
+    public PillItem setImgUri(Uri imgUri) {
+        this.imgUri = imgUri;
+        return this;
+    }
+
+    /*public String getImgBitmap() {
+        return imgBitmap;
+    }
+
+    public Pill_Item setImgBitmap(String imgBitmap) {
+        this.imgBitmap = imgBitmap;
+        return this;
+    }*/
+
+   /* public Bitmap getImgBitmapPill() {
+        return imgBitmapPill;
+    }
+
+    public Pill_Item setImgBitmapPill(Bitmap imgBitmapPill) {
+        this.imgBitmapPill = imgBitmapPill;
+        return this;
+    }*/
 
     public String getNamePill() {
         return namePill;
     }
 
-    public Pill_Item setNamePill(String namePill) {
+    public PillItem setNamePill(String namePill) {
         this.namePill = namePill;
         return this;
     }
@@ -46,7 +64,7 @@ public class Pill_Item {
         return timeToTake;
     }
 
-    public Pill_Item setTimeToTake(String timeToTake) {
+    public PillItem setTimeToTake(String timeToTake) {
         this.timeToTake = timeToTake;
         return this;
     }
@@ -55,7 +73,7 @@ public class Pill_Item {
         return sunday;
     }
 
-    public Pill_Item setSunday(Boolean sunday) {
+    public PillItem setSunday(Boolean sunday) {
         this.sunday = sunday;
         return this;
     }
@@ -64,7 +82,7 @@ public class Pill_Item {
         return monday;
     }
 
-    public Pill_Item setMonday(Boolean monday) {
+    public PillItem setMonday(Boolean monday) {
         this.monday = monday;
         return this;
     }
@@ -73,7 +91,7 @@ public class Pill_Item {
         return tuesday;
     }
 
-    public Pill_Item setTuesday(Boolean tuesday) {
+    public PillItem setTuesday(Boolean tuesday) {
         this.tuesday = tuesday;
         return this;
     }
@@ -82,7 +100,7 @@ public class Pill_Item {
         return wednesday;
     }
 
-    public Pill_Item setWednesday(Boolean wednesday) {
+    public PillItem setWednesday(Boolean wednesday) {
         this.wednesday = wednesday;
         return this;
     }
@@ -91,7 +109,7 @@ public class Pill_Item {
         return thursday;
     }
 
-    public Pill_Item setThursday(Boolean thursday) {
+    public PillItem setThursday(Boolean thursday) {
         this.thursday = thursday;
         return this;
     }
@@ -100,7 +118,7 @@ public class Pill_Item {
         return friday;
     }
 
-    public Pill_Item setFriday(Boolean friday) {
+    public PillItem setFriday(Boolean friday) {
         this.friday = friday;
         return this;
     }
@@ -109,25 +127,16 @@ public class Pill_Item {
         return saturday;
     }
 
-    public Pill_Item setSaturday(Boolean saturday) {
+    public PillItem setSaturday(Boolean saturday) {
         this.saturday = saturday;
         return this;
     }
-
-    /*public HashMap<String, String> getDayToTake() {
-        return dayToTake;
-    }
-
-    public Pill_Item setDayToTake(HashMap<String, String> dayToTake) {
-        this.dayToTake = dayToTake;
-        return this;
-    }*/
 
     public int getCountToTake() {
         return countToTake;
     }
 
-    public Pill_Item setCountToTake(int countToTake) {
+    public PillItem setCountToTake(int countToTake) {
         this.countToTake = countToTake;
         return this;
     }
@@ -137,12 +146,4 @@ public class Pill_Item {
         return LocalTime.of(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]));
     }
 
-    /*public ImageView getImgPill() {
-        return imgPill;
-    }
-
-    public Pill_Item setImgPill(ImageView imgPill) {
-        this.imgPill = imgPill;
-        return this;
-    }*/
 }

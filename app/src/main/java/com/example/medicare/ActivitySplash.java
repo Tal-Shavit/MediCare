@@ -6,12 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.medicare.Model.NewUser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +25,8 @@ public class ActivitySplash extends AppCompatActivity {
 
     private ImageView activitySplash_IMG_drug;
     private RelativeLayout upLinear;
+
+    private LottieAnimationView lottieAnimationView;
     private DisplayMetrics displayMetrics = new DisplayMetrics();
 
     private NewUser newUser;
@@ -33,57 +36,86 @@ public class ActivitySplash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        initLoadData();
+        //initLoadData();
         findViews();
+        lottieAnimationView.resumeAnimation();
+        /*new Handler().postDelayed(() -> {
+            Intent intent = new Intent(getApplicationContext(), ActivityStart.class);
+            startActivity(intent);
+            finish();
+        },6000);*/
 
-        activitySplash_IMG_drug.setVisibility(View.INVISIBLE);
+        //activitySplash_IMG_drug.setVisibility(View.INVISIBLE);
 
-        startAnimation(activitySplash_IMG_drug);
+        //startAnimation(lottieAnimationView);
     }
 
-    private void startAnimation(View view) {
-        view.setVisibility(View.VISIBLE);
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference();//"Users"
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.child("Users").child(userID).exists()) {
+                    openStartScreen();
+                }
+            }
 
-        int height = displayMetrics.heightPixels;
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-        //starting state:
-        view.setY(-height/8); // top-middle of the screen
-        view.setScaleX(0.0f); //no size X
-        view.setScaleY(0.0f); // no size Y
-        view.setAlpha(0.0f); // Transparent
+            }
 
-        view.animate()
-                .alpha(1.0f)
-                .scaleX(1.0f)
-                .scaleY(1.0f)
-                .translationY(0)
-                .setDuration(4000) //in miliseconds
-                .setListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
+        });
 
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        openStartScreen();
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-
-                    }
-                });
     }
 
+    //    private void startAnimation(View view) {
+//        view.setVisibility(View.VISIBLE);
+//        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//
+//        int height = displayMetrics.heightPixels;
+//
+//        //starting state:
+//        view.setY(-height/8); // top-middle of the screen
+//        view.setScaleX(0.0f); //no size X
+//        view.setScaleY(0.0f); // no size Y
+//        view.setAlpha(0.0f); // Transparent
+//
+//        view.animate()
+//                .alpha(1.0f)
+//                .scaleX(1.0f)
+//                .scaleY(1.0f)
+//                .translationY(0)
+//                .setDuration(4000) //in miliseconds
+//                .setListener(new Animator.AnimatorListener() {
+//                    @Override
+//                    public void onAnimationStart(Animator animation) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onAnimationEnd(Animator animation) {
+//                        openStartScreen();
+//                    }
+//
+//                    @Override
+//                    public void onAnimationCancel(Animator animation) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onAnimationRepeat(Animator animation) {
+//
+//                    }
+//                });
+//    }
 
-    private void initLoadData() {
+
+    /*private void initLoadData() {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference();//"Users"
@@ -126,17 +158,19 @@ public class ActivitySplash extends AppCompatActivity {
         if (color.equals("Red")) {
             upLinear.setBackgroundColor(getResources().getColor(R.color.lightRed));
         }
-    }
+    }*/
 
     public void openStartScreen() {
-        Intent intent = new Intent(this, Activity_Start.class);
+        Intent intent = new Intent(this, ActivityStart.class);
         startActivity(intent);
         finish();
     }
 
     private void findViews() {
-        activitySplash_IMG_drug = findViewById(R.id.activitySplash_IMG_drug);
-        upLinear = findViewById(R.id.upLinear);
+        lottieAnimationView = findViewById(R.id.lottie_ANIM_lottie);
+        //activitySplash_IMG_drug = findViewById(R.id.activitySplash_IMG_drug);
+        //upLinear = findViewById(R.id.upLinear);
     }
 
 }
+

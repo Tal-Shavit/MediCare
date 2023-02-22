@@ -31,7 +31,7 @@
 
         </activity>
         <activity
-            android:name=".Activity_Start"
+            android:name=".ActivityStart"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
@@ -40,14 +40,14 @@
 
         </activity>
         <activity
-            android:name=".Activity_AddPill"
+            android:name=".ActivityAddPill"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".Activity_Calander"
+            android:name=".ActivityCalander"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

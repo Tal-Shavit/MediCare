@@ -2,6 +2,8 @@ package com.example.medicare.Recycler;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,23 +12,25 @@ import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medicare.Model.NewUser;
-import com.example.medicare.Model.Pill_Item;
+import com.example.medicare.Model.PillItem;
 import com.example.medicare.R;
 import com.example.medicare.Interface.RecyclerViewInterface;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GridAdapter extends BaseAdapter implements RecyclerViewInterface {
@@ -35,18 +39,13 @@ public class GridAdapter extends BaseAdapter implements RecyclerViewInterface {
     private String[] timeInDay;
     private int[] images;
     private RecyclerView recyclerView;
-    private ArrayList<Pill_Item>[] pill_items;
-
-    private NewUser newUser;
-
-    private Pill_Item pill_item;
-
-
+    private ArrayList<PillItem>[] pill_items;
+    private StorageReference storageReference;
     private LayoutInflater inflater;
 
     private int day;
 
-    public GridAdapter(Context context, String[] timeInDay, int[] images, ArrayList<Pill_Item>[] pill_items, int day) {
+    public GridAdapter(Context context, String[] timeInDay, int[] images, ArrayList<PillItem>[] pill_items, int day) {
         this.context = context;
         this.timeInDay = timeInDay;
         this.images = images;
@@ -88,13 +87,14 @@ public class GridAdapter extends BaseAdapter implements RecyclerViewInterface {
         recyclerView = view.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new Adapter_Recycler(context, pill_items[position], this));
+        recyclerView.setAdapter(new AdapterRecycler(context, pill_items[position], this));
 
         return view;
     }
 
     @Override
     public void onItemClick(String time, int position) {
+
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
@@ -112,31 +112,48 @@ public class GridAdapter extends BaseAdapter implements RecyclerViewInterface {
             dialogpill_TXT_pillname.setText(pill_items[0].get(position).getNamePill());
             dialogpill_TXT_time.setText(pill_items[0].get(position).getTimeToTake());
             dialogpill_TXT_count.setText(pill_items[0].get(position).getCountToTake() + "");
+            retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
         }
         if (timeInt >= 7 && timeInt < 12) {//morning
             dialogpill_TXT_pillname.setText(pill_items[1].get(position).getNamePill());
             dialogpill_TXT_time.setText(pill_items[1].get(position).getTimeToTake());
             dialogpill_TXT_count.setText(pill_items[1].get(position).getCountToTake() + "");
+            retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
+            //dialog_IMG_image.setImageBitmap(pill_items[1].get(position).getImgBitmapPill());
+
         }
         if (timeInt >= 12 && timeInt < 16) {
             dialogpill_TXT_pillname.setText(pill_items[2].get(position).getNamePill());
             dialogpill_TXT_time.setText(pill_items[2].get(position).getTimeToTake());
             dialogpill_TXT_count.setText(pill_items[2].get(position).getCountToTake() + "");
+            retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
+            //dialog_IMG_image.setImageBitmap(pill_items[2].get(position).getImgBitmapPill());
         }
         if (timeInt >= 16 && timeInt < 19) {
             dialogpill_TXT_pillname.setText(pill_items[3].get(position).getNamePill());
             dialogpill_TXT_time.setText(pill_items[3].get(position).getTimeToTake());
             dialogpill_TXT_count.setText(pill_items[3].get(position).getCountToTake() + "");
+            retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
+            //dialog_IMG_image.setImageBitmap(pill_items[3].get(position).getImgBitmapPill());
         }
         if (timeInt >= 19 && timeInt < 24) {
             dialogpill_TXT_pillname.setText(pill_items[4].get(position).getNamePill());
             dialogpill_TXT_time.setText(pill_items[4].get(position).getTimeToTake());
             dialogpill_TXT_count.setText(pill_items[4].get(position).getCountToTake() + "");
+            retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
+            //dialog_IMG_image.setImageBitmap(pill_items[4].get(position).getImgBitmapPill());
         }
         if (timeInt >= 0 && timeInt < 4) {
             dialogpill_TXT_pillname.setText(pill_items[5].get(position).getNamePill());
             dialogpill_TXT_time.setText(pill_items[5].get(position).getTimeToTake());
             dialogpill_TXT_count.setText(pill_items[5].get(position).getCountToTake() + "");
+            retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
+            //dialog_IMG_image.setImageBitmap(pill_items[5].get(position).getImgBitmapPill());
+        }
+        if (Integer.parseInt(dialogpill_TXT_count.getText().toString()) == 1) {
+            dialogpill_TXT_count.setText(dialogpill_TXT_count.getText() + " pill");
+        } else {
+            dialogpill_TXT_count.setText(dialogpill_TXT_count.getText() + " pills");
         }
 
         calander_MBTN_delete.setOnClickListener(new View.OnClickListener() {
@@ -169,7 +186,31 @@ public class GridAdapter extends BaseAdapter implements RecyclerViewInterface {
         dialog.show();
     }
 
-    public Pill_Item createPillToDeleteLater(String pillName, String time, String count, int day) {
+    public void retriveFromStorage(String name, ImageView imageView) {
+        storageReference = FirebaseStorage.getInstance().getReference().child("images/" + name + ".jpg");
+        try {
+            final File localFile = File.createTempFile(name, "jpg");
+            storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Log.d("LALA", "lala");
+                    Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    imageView.setImageBitmap(bitmap);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    /*public Pill_Item createPillToDeleteLater(String pillName, String time, String count, int day) {
         if (day == 1) {
             return pill_item.setNamePill(pillName).setCountToTake(Integer.parseInt(count)).setTimeToTake(time)
                     .setSunday(true).setMonday(false).setTuesday(false)
@@ -214,5 +255,5 @@ public class GridAdapter extends BaseAdapter implements RecyclerViewInterface {
                     .setWednesday(false).setThursday(false)
                     .setFriday(false).setSaturday(true);
         }
-    }
-
+    */
+}

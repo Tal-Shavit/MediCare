@@ -4,17 +4,11 @@ import static android.text.TextUtils.split;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -22,20 +16,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.medicare.Interface.RecyclerViewInterface;
 import com.example.medicare.Model.NewUser;
-import com.example.medicare.Model.Pill_Item;
-import com.example.medicare.Recycler.Adapter_Recycler;
+import com.example.medicare.Model.PillItem;
 import com.example.medicare.Recycler.GridAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Activity_Calander extends AppCompatActivity{
+public class ActivityCalander extends AppCompatActivity{
 
     private TextView calander_LBL_name;
     private TextView calander_LBL_day;
@@ -79,9 +67,10 @@ public class Activity_Calander extends AppCompatActivity{
     private Button dialog_BTN_confirm;
     private Button dialog_BTN_logout;
     private NewUser newUser;
-    private ArrayList<Pill_Item>[] allPillItems2;
+    private ArrayList<PillItem>[] allPillItems2;
     private String color;
-
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +91,8 @@ public class Activity_Calander extends AppCompatActivity{
 
     private void initLoadData() {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference();//"Users"
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();//"Users"
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -115,7 +104,7 @@ public class Activity_Calander extends AppCompatActivity{
                            changeColorSystem(newUser.getColorSystem());
                            calander_TXT_day.setText(dayName.toUpperCase());
                            if(newUser.getCount()==0){
-                               showDialog();
+                               showDialog1(R.drawable.other2);
                                newUser.setCount(1);
                                newUser.loadToDataBase();
                            }
@@ -155,26 +144,14 @@ public class Activity_Calander extends AppCompatActivity{
 
     private void loadData() {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference();//"Users"
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.child("Users").child(userID).exists()){
-                    databaseReference.child("Users").child(userID).get().addOnCompleteListener(task -> {
-                        if(task.isSuccessful()){
-                            newUser = task.getResult().getValue(NewUser.class);
-                            female_IMG_image.setImageResource(newUser.getImg());
-                            changeColorSystem(newUser.getColorSystem());
-                            Dialog_IMGB_chatacter.setImageResource(newUser.getImg());
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("Users");
+        databaseReference.child(userID).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                newUser = task.getResult().getValue(NewUser.class);
+                female_IMG_image.setImageResource(newUser.getImg());
+                changeColorSystem(newUser.getColorSystem());
+                Dialog_IMGB_chatacter.setImageResource(newUser.getImg());
             }
         });
     }
@@ -217,7 +194,7 @@ public class Activity_Calander extends AppCompatActivity{
         female_IMG_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog();
+                showDialog1(newUser.getImg());
             }
         });
 
@@ -277,7 +254,7 @@ public class Activity_Calander extends AppCompatActivity{
         });
     }
 
-    private void showDialog() {
+    private void showDialog1(int imgID) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
@@ -288,6 +265,7 @@ public class Activity_Calander extends AppCompatActivity{
         dialog_BTN_confirm = dialog.findViewById(R.id.dialog_BTN_confirm);
         Dialog_IMGB_chatacter = dialog.findViewById(R.id.Dialog_IMGB_chatacter);
         Dialog_IMGB_chatacter.setImageResource(newUser.getImg());
+
         dialog.show();
 
         Dialog_IMGB_chatacter.setOnClickListener(new View.OnClickListener() {
@@ -295,14 +273,14 @@ public class Activity_Calander extends AppCompatActivity{
             public void onClick(View view) {
                 openCharacterScreen();
             }
-
         });
-        initSpinner();
 
+        initSpinner();
 
         dialog_BTN_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                loadData();
                 String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                 DatabaseReference databaseReference = firebaseDatabase.getReference();//"Users"
@@ -313,13 +291,13 @@ public class Activity_Calander extends AppCompatActivity{
                             databaseReference.child("Users").child(userID).get().addOnCompleteListener(task -> {
                                 if(task.isSuccessful()){
                                     newUser = task.getResult().getValue(NewUser.class);
+                                    female_IMG_image.setImageResource(newUser.getImg());
+                                    changeColorSystem(newUser.getColorSystem());
                                     Dialog_IMGB_chatacter.setImageResource(newUser.getImg());
-                                    newUser.setColorSystem(color);
                                     newUser.loadToDataBase();
                                 }
                             });
                         }
-                        loadData();
                     }
 
                     @Override
@@ -327,7 +305,7 @@ public class Activity_Calander extends AppCompatActivity{
 
                     }
                 });
-
+                loadData();
                 dialog.dismiss();
 
             }
@@ -369,10 +347,21 @@ public class Activity_Calander extends AppCompatActivity{
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.colorsList, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dialog_SPR_color.setAdapter(adapter);
+
         dialog_SPR_color.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                color = dialog_SPR_color.getSelectedItem().toString();
+                String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                firebaseDatabase = FirebaseDatabase.getInstance();
+                databaseReference = firebaseDatabase.getReference("Users");
+                databaseReference.child(userID).get().addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        newUser = task.getResult().getValue(NewUser.class);
+                        color = dialog_SPR_color.getSelectedItem().toString();
+                        newUser.setColorSystem(color);
+                        newUser.loadToDataBase();
+                    }
+                });
             }
 
             @Override
@@ -385,23 +374,24 @@ public class Activity_Calander extends AppCompatActivity{
     private void openCharacterScreen() {
         Intent myIntent = new Intent(this, ActivityFemale.class);
         startActivity(myIntent);
+
     }
 
     private void openStartScreen() {
-        Intent myIntent = new Intent(this, Activity_Start.class);
+        Intent myIntent = new Intent(this, ActivityStart.class);
         startActivity(myIntent);
         finish();
     }
 
     private void openNewPillScreen() {
-        Intent myIntent = new Intent(this, Activity_AddPill.class);
+        Intent myIntent = new Intent(this, ActivityAddPill.class);
         startActivity(myIntent);
         loadDataDisplayCalendar();
     }
 
     public void displayPillPerDaySunday() {
         loadDataDisplayCalendar();
-        ArrayList<Pill_Item> allPillItems = new ArrayList<>();
+        ArrayList<PillItem> allPillItems = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
             if (newUser.getAllPillItems().get(i).getSunday()) {
                 allPillItems.add(newUser.getAllPillItems().get(i));
@@ -412,7 +402,7 @@ public class Activity_Calander extends AppCompatActivity{
 
     public void displayPillPerDayMonday() {
         loadDataDisplayCalendar();
-        ArrayList<Pill_Item> allPillItemsMon = new ArrayList<>();
+        ArrayList<PillItem> allPillItemsMon = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
             if (newUser.getAllPillItems().get(i).getMonday()) {
                 allPillItemsMon.add(newUser.getAllPillItems().get(i));
@@ -423,7 +413,7 @@ public class Activity_Calander extends AppCompatActivity{
 
     public void displayPillPerDayTueday() {
         loadDataDisplayCalendar();
-        ArrayList<Pill_Item> allPillItems = new ArrayList<>();
+        ArrayList<PillItem> allPillItems = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
             if (newUser.getAllPillItems().get(i).getTuesday()) {
                 allPillItems.add(newUser.getAllPillItems().get(i));
@@ -434,7 +424,7 @@ public class Activity_Calander extends AppCompatActivity{
 
     public void displayPillPerDayWednesday() {
         loadDataDisplayCalendar();
-        ArrayList<Pill_Item> allPillItems = new ArrayList<>();
+        ArrayList<PillItem> allPillItems = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
             if (newUser.getAllPillItems().get(i).getWednesday()) {
                 allPillItems.add(newUser.getAllPillItems().get(i));
@@ -445,7 +435,7 @@ public class Activity_Calander extends AppCompatActivity{
 
     public void displayPillPerDayThurday() {
         loadDataDisplayCalendar();
-        ArrayList<Pill_Item> allPillItems = new ArrayList<>();
+        ArrayList<PillItem> allPillItems = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
             if (newUser.getAllPillItems().get(i).getThursday()) {
                 allPillItems.add(newUser.getAllPillItems().get(i));
@@ -456,7 +446,7 @@ public class Activity_Calander extends AppCompatActivity{
 
     public void displayPillPerDayFriday() {
         loadDataDisplayCalendar();
-        ArrayList<Pill_Item> allPillItems = new ArrayList<>();
+        ArrayList<PillItem> allPillItems = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
             if (newUser.getAllPillItems().get(i).getFriday()) {
                 allPillItems.add(newUser.getAllPillItems().get(i));
@@ -467,7 +457,7 @@ public class Activity_Calander extends AppCompatActivity{
 
     public void displayPillPerDaySaturday() {
         loadDataDisplayCalendar();
-        ArrayList<Pill_Item> allPillItems = new ArrayList<>();
+        ArrayList<PillItem> allPillItems = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
             if (newUser.getAllPillItems().get(i).getSaturday()) {
                 allPillItems.add(newUser.getAllPillItems().get(i));
@@ -476,10 +466,10 @@ public class Activity_Calander extends AppCompatActivity{
         splitArrayByHours(allPillItems,7);
     }
 
-    public ArrayList<Pill_Item>[] splitArrayByHours(ArrayList<Pill_Item> pill_itemsDay, int day) {
+    public ArrayList<PillItem>[] splitArrayByHours(ArrayList<PillItem> pill_itemsDay, int day) {
         allPillItems2 = new ArrayList[6];
         for (int i = 0; i < 6; i++) {
-            allPillItems2[i] = new ArrayList<Pill_Item>();
+            allPillItems2[i] = new ArrayList<PillItem>();
         }
         for (int i = 0; i < pill_itemsDay.size(); i++) {
             if (LocalTime.parse(pill_itemsDay.get(i).getTimeToTake()).isBefore(LocalTime.of(4, 00))) {
@@ -524,7 +514,7 @@ public class Activity_Calander extends AppCompatActivity{
         };
 
         loadDataDisplayCalendar();
-        gridAdapter = new GridAdapter(Activity_Calander.this, timeInDay, images, allPillItems2, day);
+        gridAdapter = new GridAdapter(ActivityCalander.this, timeInDay, images, allPillItems2, day);
         gridView.setAdapter(gridAdapter);
         return allPillItems2;
     }

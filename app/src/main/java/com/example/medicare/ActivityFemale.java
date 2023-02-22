@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.medicare.Model.NewUser;
-import com.example.medicare.Model.Pill_Item;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +29,9 @@ public class ActivityFemale extends AppCompatActivity {
 
 
     private NewUser newUser;
+
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
     private int[] drawableFemale = new int[]{
             R.drawable.profile,
@@ -136,6 +137,17 @@ public class ActivityFemale extends AppCompatActivity {
             imageButtons[i * 3 + j] = image;
             linearL.addView(image, lp);
         }
+    }
+
+    private void loadData() {
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("Users");
+        databaseReference.child(userID).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                newUser = task.getResult().getValue(NewUser.class);
+            }
+        });
     }
 
         private void initViews() {
