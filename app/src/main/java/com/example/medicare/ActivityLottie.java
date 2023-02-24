@@ -28,7 +28,7 @@ public class ActivityLottie extends AppCompatActivity {
         lottieAnimationView.resumeAnimation();
         new Handler().postDelayed(() -> {
             openStartScreen();
-        },5000);
+        },6000);
     }
 
     public void openStartScreen() {
