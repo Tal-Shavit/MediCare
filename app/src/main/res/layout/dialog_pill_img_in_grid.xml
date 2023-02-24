@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="350dp"
-    android:layout_height="350dp"
+    android:layout_height="420dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="@color/light">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -15,6 +16,7 @@
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:text="PILL: "
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:fontFamily="@font/candaral"
             android:textStyle="bold"/>
@@ -40,6 +42,7 @@
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:text="TIME: "
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:fontFamily="@font/candaral"
             android:textStyle="bold"/>
@@ -65,6 +68,7 @@
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:text="COUNT: "
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:fontFamily="@font/candaral"
             android:textStyle="bold"/>
@@ -73,6 +77,7 @@
             android:id="@+id/dialogpill_TXT_count"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:text="2"
             android:textAllCaps="true"
             android:textSize="20sp"

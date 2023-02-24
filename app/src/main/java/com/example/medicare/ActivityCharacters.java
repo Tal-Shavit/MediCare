@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class ActivityFemale extends AppCompatActivity {
+public class ActivityCharacters extends AppCompatActivity {
 
     private LinearLayout panel_col;
     private LinearLayout.LayoutParams linearParam = null;
@@ -96,7 +96,7 @@ public class ActivityFemale extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_female);
+        setContentView(R.layout.activity_characters);
 
         arrOfLayout = new ArrayList(3);
 
@@ -113,7 +113,7 @@ public class ActivityFemale extends AppCompatActivity {
 
     public void insertImageView() {
         for (int i = 0; i < 18; i++) {//rows
-            LinearLayout linearL = new LinearLayout(ActivityFemale.this);
+            LinearLayout linearL = new LinearLayout(ActivityCharacters.this);
             linearL.setGravity(Gravity.CENTER);
             linearL.setOrientation(LinearLayout.HORIZONTAL);
             linearL.setId(i + 1);
@@ -128,7 +128,7 @@ public class ActivityFemale extends AppCompatActivity {
 
     public void insertObject(int i, LinearLayout linearL) {
         for (int j = 0; j < 3; j++) {//cols
-            ImageButton image = new ImageButton(ActivityFemale.this);
+            ImageButton image = new ImageButton(ActivityCharacters.this);
             image.setScaleType(ImageView.ScaleType.FIT_CENTER);
             image.setBackgroundColor(getResources().getColor(R.color.white));
             image.setId(View.generateViewId());

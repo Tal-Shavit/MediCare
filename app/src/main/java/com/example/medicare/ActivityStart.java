@@ -46,7 +46,6 @@ public class ActivityStart extends AppCompatActivity {
         }
     }
 
-    // See: https://developer.android.com/training/basics/intents/result
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
             new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
@@ -68,7 +67,7 @@ public class ActivityStart extends AppCompatActivity {
                    NewUser newUser = new NewUser();
                    newUser.setName(mAuth.getCurrentUser().getDisplayName())
                            .setEmail(mAuth.getCurrentUser().getEmail())
-                          .setImg(R.drawable.other2)
+                           .setImg(R.drawable.other2)
                            .setColorSystem("Green").setCount(0);
                    newUser.loadToDataBase();
                }
@@ -91,7 +90,6 @@ public class ActivityStart extends AppCompatActivity {
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
-                //.setTheme(com.firebase.ui.auth.R.style.EmptyTheme)
                 .build();
         signInLauncher.launch(signInIntent);
     }

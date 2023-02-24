@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -83,13 +83,16 @@ public class ActivityCalander extends AppCompatActivity{
         month = calendar.get(Calendar.MONTH) + 1;
         dayOfWeekNum = calendar.get(Calendar.DAY_OF_WEEK);
 
-
         initLoadData();
         findViews();
         initViews();
     }
 
     private void initLoadData() {
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Uploading...");
+        progressDialog.show();
+
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();//"Users"
@@ -129,10 +132,10 @@ public class ActivityCalander extends AppCompatActivity{
                            if (dayOfWeekNum == 7) {
                                displayPillPerDaySaturday();
                            }
-
                        }
                     });
                 }
+                progressDialog.dismiss();
             }
 
             @Override
@@ -156,7 +159,7 @@ public class ActivityCalander extends AppCompatActivity{
         });
     }
 
-    private void loadDataDisplayCalendar() {
+    private void loadDataOnly() {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference();//"Users"
@@ -171,7 +174,6 @@ public class ActivityCalander extends AppCompatActivity{
                     });
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -187,7 +189,7 @@ public class ActivityCalander extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 openNewPillScreen();
-                loadDataDisplayCalendar();
+                loadDataOnly();
             }
         });
 
@@ -195,6 +197,7 @@ public class ActivityCalander extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 showDialog1(newUser.getImg());
+                //showDialog1(R.drawable.other2);
             }
         });
 
@@ -319,28 +322,7 @@ public class ActivityCalander extends AppCompatActivity{
                 openStartScreen();
             }
         });
-        loadDataDisplayCalendar();
-    }
-
-    public void changeColorSystem(String color) {
-        if (color.equals("Green")) {
-            upLinear.setBackgroundColor(getResources().getColor(R.color.lightGreen));
-        }
-        if (color.equals("Blue")) {
-            upLinear.setBackgroundColor(getResources().getColor(R.color.lightBlue));
-        }
-        if (color.equals("Pink")) {
-            upLinear.setBackgroundColor(getResources().getColor(R.color.lightPink));
-        }
-        if (color.equals("Orange")) {
-            upLinear.setBackgroundColor(getResources().getColor(R.color.lightOrange));
-        }
-        if (color.equals("Yellow")) {
-            upLinear.setBackgroundColor(getResources().getColor(R.color.lightYellow));
-        }
-        if (color.equals("Red")) {
-            upLinear.setBackgroundColor(getResources().getColor(R.color.lightRed));
-        }
+        loadDataOnly();
     }
 
     private void initSpinner() {
@@ -372,7 +354,7 @@ public class ActivityCalander extends AppCompatActivity{
     }
 
     private void openCharacterScreen() {
-        Intent myIntent = new Intent(this, ActivityFemale.class);
+        Intent myIntent = new Intent(this, ActivityCharacters.class);
         startActivity(myIntent);
 
     }
@@ -386,11 +368,11 @@ public class ActivityCalander extends AppCompatActivity{
     private void openNewPillScreen() {
         Intent myIntent = new Intent(this, ActivityAddPill.class);
         startActivity(myIntent);
-        loadDataDisplayCalendar();
+        loadDataOnly();
     }
 
     public void displayPillPerDaySunday() {
-        loadDataDisplayCalendar();
+        loadDataOnly();
         ArrayList<PillItem> allPillItems = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
             if (newUser.getAllPillItems().get(i).getSunday()) {
@@ -401,7 +383,7 @@ public class ActivityCalander extends AppCompatActivity{
     }
 
     public void displayPillPerDayMonday() {
-        loadDataDisplayCalendar();
+        loadDataOnly();
         ArrayList<PillItem> allPillItemsMon = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
             if (newUser.getAllPillItems().get(i).getMonday()) {
@@ -412,7 +394,7 @@ public class ActivityCalander extends AppCompatActivity{
     }
 
     public void displayPillPerDayTueday() {
-        loadDataDisplayCalendar();
+        loadDataOnly();
         ArrayList<PillItem> allPillItems = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
             if (newUser.getAllPillItems().get(i).getTuesday()) {
@@ -423,7 +405,7 @@ public class ActivityCalander extends AppCompatActivity{
     }
 
     public void displayPillPerDayWednesday() {
-        loadDataDisplayCalendar();
+        loadDataOnly();
         ArrayList<PillItem> allPillItems = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
             if (newUser.getAllPillItems().get(i).getWednesday()) {
@@ -434,7 +416,7 @@ public class ActivityCalander extends AppCompatActivity{
     }
 
     public void displayPillPerDayThurday() {
-        loadDataDisplayCalendar();
+        loadDataOnly();
         ArrayList<PillItem> allPillItems = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
             if (newUser.getAllPillItems().get(i).getThursday()) {
@@ -445,7 +427,7 @@ public class ActivityCalander extends AppCompatActivity{
     }
 
     public void displayPillPerDayFriday() {
-        loadDataDisplayCalendar();
+        loadDataOnly();
         ArrayList<PillItem> allPillItems = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
             if (newUser.getAllPillItems().get(i).getFriday()) {
@@ -456,7 +438,7 @@ public class ActivityCalander extends AppCompatActivity{
     }
 
     public void displayPillPerDaySaturday() {
-        loadDataDisplayCalendar();
+        loadDataOnly();
         ArrayList<PillItem> allPillItems = new ArrayList<>();
         for (int i = 0; i < newUser.getAllPillItems().size(); i++) {
             if (newUser.getAllPillItems().get(i).getSaturday()) {
@@ -513,7 +495,7 @@ public class ActivityCalander extends AppCompatActivity{
                 "NIGHT"//00:00-03:45
         };
 
-        loadDataDisplayCalendar();
+        loadDataOnly();
         gridAdapter = new GridAdapter(ActivityCalander.this, timeInDay, images, allPillItems2, day);
         gridView.setAdapter(gridAdapter);
         return allPillItems2;
@@ -536,4 +518,25 @@ public class ActivityCalander extends AppCompatActivity{
             calander_MBTN_saturday = findViewById(R.id.calander_MBTN_saturday);
             calander_TXT_day = findViewById(R.id.calander_TXT_day);
         }
+
+    public void changeColorSystem(String color) {
+        if (color.equals("Green")) {
+            upLinear.setBackgroundColor(getResources().getColor(R.color.lightGreen));
+        }
+        if (color.equals("Blue")) {
+            upLinear.setBackgroundColor(getResources().getColor(R.color.lightBlue));
+        }
+        if (color.equals("Pink")) {
+            upLinear.setBackgroundColor(getResources().getColor(R.color.lightPink));
+        }
+        if (color.equals("Orange")) {
+            upLinear.setBackgroundColor(getResources().getColor(R.color.lightOrange));
+        }
+        if (color.equals("Yellow")) {
+            upLinear.setBackgroundColor(getResources().getColor(R.color.lightYellow));
+        }
+        if (color.equals("Red")) {
+            upLinear.setBackgroundColor(getResources().getColor(R.color.lightRed));
+        }
+    }
 }

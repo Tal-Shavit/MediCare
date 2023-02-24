@@ -49,9 +49,9 @@ import java.util.ArrayList;
 
 public class ActivityAddPill extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+    public static final int REQUEST_CODE_GALLERY = 1;
     private StorageReference storageReference;
     private Button newPill_BTN_confirm;
-    private ImageButton pill_IBT_Camera;
     private ImageButton pill_IBT_Gallery;
     private ImageView addPill_IMG_image;
     private Button backButton;
@@ -80,6 +80,8 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_pill);
+
+        storageReference = FirebaseStorage.getInstance().getReference();
 
         loadData();
         initArrayListDrugs();
@@ -112,6 +114,9 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
                         if(snapshot.child(i+"").exists()){
                             for (DataSnapshot dataSnapshot : snapshot.child(i+"").getChildren()){
                                 String name = dataSnapshot.getValue().toString();
+                                if(name.contains("/")){
+                                    name = name.replace("/","-");
+                                }
                                 arrayListAllPill.add(name);
                             }
 
@@ -120,14 +125,12 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
                 }
             }
 
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
-
 
     private void initViews() {
         addPill_LBL_search.setOnClickListener(new View.OnClickListener() {
@@ -182,36 +185,37 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
                    if(task.isSuccessful()){
                        newUser = task.getResult().getValue(NewUser.class);
                        if(addpill_TXT_count.getText().toString().equals("")){
+                           Toast.makeText(ActivityAddPill.this, "FILL COUNT!", Toast.LENGTH_SHORT).show();
                            addpill_TXT_count.setHint("FILL COUNT!");
+                       }
+                       if(addPill_LBL_search.getText().toString().isEmpty()){
+                           Toast.makeText(ActivityAddPill.this, "SELECT A PILL", Toast.LENGTH_SHORT).show();
+                       }
+                       if((!checkboxSun.isChecked()&&!checkboxMon.isChecked()&&!checkboxTue.isChecked()&&!checkboxWed.isChecked()&&!checkboxThu.isChecked()&&!checkboxFri.isChecked()&&!checkboxSat.isChecked())){
+                           Toast.makeText(ActivityAddPill.this, "CHOOSE AT LEAST 1 DAY", Toast.LENGTH_SHORT).show();
+                       }
+                       if(spinnerForHour.getSelectedItem().toString().isEmpty()){
+                           Toast.makeText(ActivityAddPill.this, "SELECT HOUR!", Toast.LENGTH_SHORT).show();
                        }
                        else{
                            countOfPills = Integer.parseInt(addpill_TXT_count.getText()+"");
+                           pill_item = new PillItem();
+                           pill_item.setNamePill(addPill_LBL_search.getText().toString())
+                                   .setCountToTake(countOfPills)
+                                   .setTimeToTake(pill_item.convertStringToTime(spinnerForHour.getSelectedItem().toString()).toString())
+                                   .setSunday(checkboxSun.isChecked())
+                                   .setMonday(checkboxMon.isChecked()).setTuesday(checkboxTue.isChecked())
+                                   .setWednesday(checkboxWed.isChecked()).setThursday(checkboxThu.isChecked())
+                                   .setFriday(checkboxFri.isChecked()).setSaturday(checkboxSat.isChecked());
+                           newUser.addPill(pill_item);
+                           newUser.loadToDataBase();
                        }
-                       pill_item = new PillItem();
-                       pill_item.setNamePill(addPill_LBL_search.getText().toString())
-                               .setCountToTake(countOfPills)
-                               .setTimeToTake(pill_item.convertStringToTime(spinnerForHour.getSelectedItem().toString()).toString())
-                               .setSunday(checkboxSun.isChecked())
-                               .setMonday(checkboxMon.isChecked()).setTuesday(checkboxTue.isChecked())
-                               .setWednesday(checkboxWed.isChecked()).setThursday(checkboxThu.isChecked())
-                               .setFriday(checkboxFri.isChecked()).setSaturday(checkboxSat.isChecked());
-                       //pill_item.setImgUri(imagePath);
-                       newUser.addPill(pill_item);
-                       newUser.loadToDataBase();
                    }
                 });
-                if(!addpill_TXT_count.getText().toString().equals("")){
+                if(!addpill_TXT_count.getText().toString().equals("") && !addPill_LBL_search.getText().toString().isEmpty() &&
+                        (checkboxSun.isChecked()||checkboxMon.isChecked()||checkboxTue.isChecked()||checkboxWed.isChecked()||checkboxThu.isChecked()||checkboxFri.isChecked()||checkboxSat.isChecked()) && (!spinnerForHour.getSelectedItem().toString().isEmpty())){
                     backCalanderScreen();
                 }
-            }
-        });
-
-        pill_IBT_Camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent,100);
-                showImageDialog();
             }
         });
 
@@ -219,7 +223,7 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
             @Override
             public void onClick(View view) {
                 Intent photoInent = new Intent(Intent.ACTION_PICK);
-                photoInent.setType("image/*");
+                photoInent.setType("image/");
                 startActivityForResult(photoInent,1);
                 showImageDialog();
             }
@@ -227,7 +231,6 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
 
         initSpinner();
     }
-
 
     private void initSpinner() {
         ArrayAdapter<CharSequence> adapterHours = ArrayAdapter.createFromResource(this, R.array.hoursList,android.R.layout.simple_spinner_item);
@@ -240,28 +243,10 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+        if (requestCode == REQUEST_CODE_GALLERY && resultCode == RESULT_OK && data != null) {
             imagePath = data.getData();
             getImageInImageView();
             uploadImageToStorage();
-        }
-
-        /*if(requestCode == 3){
-            if(resultCode== RESULT_OK){
-                selectedImage = data.getData();
-                StorageReference imageName = Folder.child(spinnerForPill.getSelectedItem()+"");
-                imageName.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    }
-                });
-            }
-        }*/
-
-        if(requestCode == 100){
-            Bitmap bitmap= (Bitmap) data.getExtras().get("data");
-            addPill_IMG_image.setImageBitmap(bitmap);
         }
     }
 
@@ -301,7 +286,7 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
-        dialog.setContentView(R.layout.show_image);
+        dialog.setContentView(R.layout.show_image_pill);
 
         addPill_IMG_image = dialog.findViewById(R.id.addPill_IMG_image);
         backButton = dialog.findViewById(R.id.backButton);
@@ -311,8 +296,6 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //add the picture
-                //newUser.setImageView(addPill_IMG_image);
                 dialog.dismiss();
             }
         });
@@ -320,7 +303,6 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
 
     private void findViews() {
         newPill_BTN_confirm = findViewById(R.id.newPill_BTN_confirm);
-        pill_IBT_Camera = findViewById(R.id.pill_IBT_Camera);
         pill_IBT_Gallery = findViewById(R.id.pill_IBT_Gallery);
         addPill_LBL_search = findViewById(R.id.addPill_LBL_search);
         spinnerForHour = findViewById(R.id.spinnerForHour);
@@ -334,7 +316,6 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
         checkboxSat = findViewById(R.id.checkboxSat);
         upLinear = findViewById(R.id.upLinear);
     }
-
 
     private void backCalanderScreen() {
         loadData();

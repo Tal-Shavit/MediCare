@@ -1,10 +1,10 @@
 package com.example.medicare.Recycler;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GridAdapter extends BaseAdapter implements RecyclerViewInterface {
-
     private Context context;
     private String[] timeInDay;
     private int[] images;
@@ -42,6 +41,10 @@ public class GridAdapter extends BaseAdapter implements RecyclerViewInterface {
     private ArrayList<PillItem>[] pill_items;
     private StorageReference storageReference;
     private LayoutInflater inflater;
+
+    private NewUser newUser;
+
+    private ProgressDialog progressDialog;
 
     private int day;
 
@@ -92,13 +95,33 @@ public class GridAdapter extends BaseAdapter implements RecyclerViewInterface {
         return view;
     }
 
+    public void retriveFromStorage(String name, ImageView imageView) {
+        storageReference = FirebaseStorage.getInstance().getReference().child("images/" + name + ".jpg");
+        try {
+            final File localFile = File.createTempFile(name, ".jpg");
+            storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    imageView.setImageBitmap(bitmap);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(context, "DIDN'T CHOOSE A PHOTO", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void onItemClick(String time, int position) {
-
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
-        dialog.setContentView(R.layout.dialog_pill_img);
+        dialog.setContentView(R.layout.dialog_pill_img_in_grid);
 
         TextView dialogpill_TXT_pillname = dialog.findViewById(R.id.dialogpill_TXT_pillname);
         TextView dialogpill_TXT_time = dialog.findViewById(R.id.dialogpill_TXT_time);
@@ -119,36 +142,30 @@ public class GridAdapter extends BaseAdapter implements RecyclerViewInterface {
             dialogpill_TXT_time.setText(pill_items[1].get(position).getTimeToTake());
             dialogpill_TXT_count.setText(pill_items[1].get(position).getCountToTake() + "");
             retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
-            //dialog_IMG_image.setImageBitmap(pill_items[1].get(position).getImgBitmapPill());
-
         }
         if (timeInt >= 12 && timeInt < 16) {
             dialogpill_TXT_pillname.setText(pill_items[2].get(position).getNamePill());
             dialogpill_TXT_time.setText(pill_items[2].get(position).getTimeToTake());
             dialogpill_TXT_count.setText(pill_items[2].get(position).getCountToTake() + "");
             retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
-            //dialog_IMG_image.setImageBitmap(pill_items[2].get(position).getImgBitmapPill());
         }
         if (timeInt >= 16 && timeInt < 19) {
             dialogpill_TXT_pillname.setText(pill_items[3].get(position).getNamePill());
             dialogpill_TXT_time.setText(pill_items[3].get(position).getTimeToTake());
             dialogpill_TXT_count.setText(pill_items[3].get(position).getCountToTake() + "");
             retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
-            //dialog_IMG_image.setImageBitmap(pill_items[3].get(position).getImgBitmapPill());
         }
         if (timeInt >= 19 && timeInt < 24) {
             dialogpill_TXT_pillname.setText(pill_items[4].get(position).getNamePill());
             dialogpill_TXT_time.setText(pill_items[4].get(position).getTimeToTake());
             dialogpill_TXT_count.setText(pill_items[4].get(position).getCountToTake() + "");
             retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
-            //dialog_IMG_image.setImageBitmap(pill_items[4].get(position).getImgBitmapPill());
         }
         if (timeInt >= 0 && timeInt < 4) {
             dialogpill_TXT_pillname.setText(pill_items[5].get(position).getNamePill());
             dialogpill_TXT_time.setText(pill_items[5].get(position).getTimeToTake());
             dialogpill_TXT_count.setText(pill_items[5].get(position).getCountToTake() + "");
             retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
-            //dialog_IMG_image.setImageBitmap(pill_items[5].get(position).getImgBitmapPill());
         }
         if (Integer.parseInt(dialogpill_TXT_count.getText().toString()) == 1) {
             dialogpill_TXT_count.setText(dialogpill_TXT_count.getText() + " pill");
@@ -159,101 +176,11 @@ public class GridAdapter extends BaseAdapter implements RecyclerViewInterface {
         calander_MBTN_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = firebaseDatabase.getReference();//"Users"
-                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.child("Users").child(userID).exists()){
-                            databaseReference.child("Users").child(userID).get().addOnCompleteListener(task -> {
-                                if(task.isSuccessful()){
-                                    newUser = task.getResult().getValue(NewUser.class);
-                                }
-                            });
-                        }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });*/
             }
         });
 
         dialog.setCancelable(true);
         dialog.show();
     }
-
-    public void retriveFromStorage(String name, ImageView imageView) {
-        storageReference = FirebaseStorage.getInstance().getReference().child("images/" + name + ".jpg");
-        try {
-            final File localFile = File.createTempFile(name, "jpg");
-            storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    Log.d("LALA", "lala");
-                    Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
-                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                    imageView.setImageBitmap(bitmap);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    /*public Pill_Item createPillToDeleteLater(String pillName, String time, String count, int day) {
-        if (day == 1) {
-            return pill_item.setNamePill(pillName).setCountToTake(Integer.parseInt(count)).setTimeToTake(time)
-                    .setSunday(true).setMonday(false).setTuesday(false)
-                    .setWednesday(false).setThursday(false)
-                    .setFriday(false).setSaturday(false);
-
-        }
-        if (day == 2) {
-            return pill_item.setNamePill(pillName).setCountToTake(Integer.parseInt(count)).setTimeToTake(time)
-                    .setSunday(false).setMonday(true).setTuesday(false)
-                    .setWednesday(false).setThursday(false)
-                    .setFriday(false).setSaturday(false);
-        }
-        if (day == 3) {
-            pill_item = new Pill_Item();
-
-            return pill_item.setNamePill(pillName).setCountToTake(Integer.parseInt(count)).setTimeToTake(time)
-                    .setSunday(false).setMonday(false).setTuesday(true)
-                    .setWednesday(false).setThursday(false)
-                    .setFriday(false).setSaturday(false);
-        }
-        if (day == 4) {
-            return pill_item.setNamePill(pillName).setCountToTake(Integer.parseInt(count)).setTimeToTake(time)
-                    .setSunday(false).setMonday(false).setTuesday(false)
-                    .setWednesday(true).setThursday(false)
-                    .setFriday(false).setSaturday(false);
-        }
-        if (day == 5) {
-            return pill_item.setNamePill(pillName).setCountToTake(Integer.parseInt(count)).setTimeToTake(time)
-                    .setSunday(false).setMonday(false).setTuesday(false)
-                    .setWednesday(false).setThursday(true)
-                    .setFriday(false).setSaturday(false);
-        }
-        if (day == 6) {
-            return pill_item.setNamePill(pillName).setCountToTake(Integer.parseInt(count)).setTimeToTake(time)
-                    .setSunday(false).setMonday(false).setTuesday(false)
-                    .setWednesday(false).setThursday(false)
-                    .setFriday(true).setSaturday(false);
-        }
-        return pill_item.setNamePill(pillName).setCountToTake(Integer.parseInt(count)).setTimeToTake(time)
-                    .setSunday(false).setMonday(false).setTuesday(false)
-                    .setWednesday(false).setThursday(false)
-                    .setFriday(false).setSaturday(true);
-        }
-    */
 }

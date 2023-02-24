@@ -70,18 +70,6 @@
                     android:padding="10dp"/>
             </RelativeLayout>
 
-           
-
-<!--            <Spinner-->
-<!--                android:id="@+id/spinnerForPill"-->
-<!--                android:layout_width="120dp"-->
-<!--                android:layout_height="70dp"-->
-<!--                android:layout_marginHorizontal="20dp"-->
-<!--                android:background="@android:drawable/btn_dropdown"-->
-<!--                >-->
-<!--                -->
-<!--            </Spinner>-->
-
         </LinearLayout>
 
 
@@ -318,8 +306,8 @@
             android:layout_height="10dp"/>
 
         <LinearLayout
-            android:layout_width="250dp"
-            android:layout_height="200dp"
+            android:layout_width="220dp"
+            android:layout_height="150dp"
             android:background="@drawable/shapelogin"
             android:orientation="vertical"
             android:layout_marginTop="10dp"
@@ -341,18 +329,6 @@
                 android:orientation="horizontal"
                 android:gravity="center">
 
-                <ImageButton
-                    android:id="@+id/pill_IBT_Camera"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/shapelogin"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/camera" />
-
-                <View
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"/>
-
 
                     <ImageButton
                         android:id="@+id/pill_IBT_Gallery"
@@ -360,6 +336,7 @@
                         android:layout_height="80dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/gallery"
+                        android:layout_gravity="center"
                         android:background="@drawable/shapelogin"/>
 
 
@@ -382,7 +359,8 @@
             android:text="confirm"
             android:textColor="@color/black"
             android:layout_marginTop="10dp"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            />
 
     </LinearLayout>
 

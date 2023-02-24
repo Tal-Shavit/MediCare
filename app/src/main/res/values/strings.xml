@@ -10,14 +10,8 @@
         <item>Red</item>
     </string-array>
 
-    <string-array name="pillsList">
-        <item>Acamoll</item>
-        <item>Advill</item>
-        <item>Nerosinl</item>
-        <item>Nurofenl</item>
-    </string-array>
-
     <string-array name="hoursList">
+        <item></item>
         <item>00:00</item>
         <item>00:15</item>
         <item>00:30</item>
