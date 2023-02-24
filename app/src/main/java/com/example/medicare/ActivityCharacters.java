@@ -26,68 +26,23 @@ public class ActivityCharacters extends AppCompatActivity {
     private LinearLayout panel_col;
     private LinearLayout.LayoutParams linearParam = null;
     private ArrayList<LinearLayout> arrOfLayout;
-
-
     private NewUser newUser;
-
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-
     private int[] drawableFemale = new int[]{
-            R.drawable.profile,
-            R.drawable.vip,
-            R.drawable.moslemwoman,
-            R.drawable.girl,
-            R.drawable.girl2,
-            R.drawable.fashionblogger,
-            R.drawable.manager,
-            R.drawable.grandmother,
-            R.drawable.user,
-            R.drawable.user6,
-            R.drawable.user7,
-            R.drawable.user8,
-            R.drawable.user9,
-            R.drawable.user10,
-            R.drawable.user11,
-            R.drawable.grandpa,
-            R.drawable.man,
-            R.drawable.boy,
-            R.drawable.man1,
-            R.drawable.man2,
-            R.drawable.model,
-            R.drawable.employee,
-            R.drawable.man4,
-            R.drawable.man3,
-            R.drawable.boy2,
-            R.drawable.boy3,
-            R.drawable.man5,
-            R.drawable.man6,
-            R.drawable.man7,
-            R.drawable.man8,
-            R.drawable.other1,
-            R.drawable.other2,
-            R.drawable.other3,
-            R.drawable.other4,
-            R.drawable.other5,
-            R.drawable.other12,
-            R.drawable.other11,
-            R.drawable.other13,
-            R.drawable.other10,
-            R.drawable.other20,
-            R.drawable.other21,
-            R.drawable.other22,
-            R.drawable.other23,
-            R.drawable.other24,
-            R.drawable.other19,
-            R.drawable.other6,
-            R.drawable.other14,
-            R.drawable.other15,
-            R.drawable.other16,
-            R.drawable.other17,
-            R.drawable.other18,
-            R.drawable.other7,
-            R.drawable.other8,
-            R.drawable.other9
+            R.drawable.profile,R.drawable.vip,R.drawable.moslemwoman,R.drawable.girl,
+            R.drawable.girl2, R.drawable.fashionblogger,R.drawable.manager,
+            R.drawable.grandmother,R.drawable.user, R.drawable.user6,R.drawable.user7,
+            R.drawable.user8,R.drawable.user9,R.drawable.user10,R.drawable.user11,
+            R.drawable.grandpa,R.drawable.man,R.drawable.boy,R.drawable.man1,
+            R.drawable.man2,R.drawable.model,R.drawable.employee,R.drawable.man4,R.drawable.man3,
+            R.drawable.boy2,R.drawable.boy3,R.drawable.man5,R.drawable.man6,R.drawable.man7,
+            R.drawable.man8,R.drawable.other1,R.drawable.other2,R.drawable.other3,R.drawable.other4,
+            R.drawable.other5,R.drawable.other12,R.drawable.other11,R.drawable.other13,
+            R.drawable.other10,R.drawable.other20,R.drawable.other21,R.drawable.other22,
+            R.drawable.other23,R.drawable.other24,R.drawable.other19, R.drawable.other6,
+            R.drawable.other14, R.drawable.other15,R.drawable.other16,R.drawable.other17,
+            R.drawable.other18,R.drawable.other7,R.drawable.other8,R.drawable.other9
     };
 
     private ImageButton[] imageButtons = new ImageButton[drawableFemale.length];
@@ -138,49 +93,37 @@ public class ActivityCharacters extends AppCompatActivity {
             linearL.addView(image, lp);
         }
     }
-
-    private void loadData() {
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Users");
-        databaseReference.child(userID).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                newUser = task.getResult().getValue(NewUser.class);
-            }
-        });
-    }
-
-        private void initViews() {
-        for (int i = 0; i < imageButtons.length; i++) {
-            int finalI = i;
-            imageButtons[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                    DatabaseReference databaseReference = firebaseDatabase.getReference();//"Users"
-                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(snapshot.child("Users").child(userID).exists()){
-                                databaseReference.child("Users").child(userID).get().addOnCompleteListener(task -> {
-                                    if(task.isSuccessful()){
-                                        newUser = task.getResult().getValue(NewUser.class);
-                                        newUser.setImg(drawableFemale[finalI]);
-                                        newUser.loadToDataBase();
-                                    }
-                                });
-                            }
+    private void initViews() {
+    for (int i = 0; i < imageButtons.length; i++) {
+        int finalI = i;
+        imageButtons[i].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference databaseReference = firebaseDatabase.getReference();
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.child("Users").child(userID).exists()){
+                            databaseReference.child("Users").child(userID).get().addOnCompleteListener(task -> {
+                                if(task.isSuccessful()){
+                                    newUser = task.getResult().getValue(NewUser.class);
+                                    newUser.setImg(drawableFemale[finalI]);
+                                    newUser.loadToDataBase();
+                                }
+                            });
                         }
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-                        }
-                    });
-                    finish();
+                    }
+                });
+                finish();
                 }
-            });
+             });
         }
 
     }

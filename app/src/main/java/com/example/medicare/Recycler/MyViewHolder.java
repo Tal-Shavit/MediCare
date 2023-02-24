@@ -16,8 +16,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
-
-    Context context;
     TextView textViewName;
     TextView textViewTime;
     TextView textViewCount;
@@ -40,6 +38,4 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
             }
         });
     }
-
-
 }

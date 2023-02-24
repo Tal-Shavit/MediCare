@@ -27,35 +27,8 @@ public class ActivityLottie extends AppCompatActivity {
         findViews();
         lottieAnimationView.resumeAnimation();
         new Handler().postDelayed(() -> {
-            //Intent intent = new Intent(getApplicationContext(), ActivityStart.class);
-            //startActivity(intent);
-            //finish();
-            //start();
             openStartScreen();
         },5000);
-    }
-
-    //@Override
-    protected void start() {
-        super.onStart();
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference();//"Users"
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.child("Users").child(userID).exists()) {
-                    openStartScreen();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-
-        });
-
     }
 
     public void openStartScreen() {

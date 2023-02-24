@@ -15,7 +15,6 @@ public class NewUser {
     private ImageView imageView;
     private int img;
     private String colorSystem = "";
-
     private int count = 0;
 
     public NewUser() {
@@ -29,7 +28,6 @@ public class NewUser {
         this.count = count;
         return this;
     }
-
     public String getColorSystem() {
         return colorSystem;
     }
@@ -38,7 +36,6 @@ public class NewUser {
         this.colorSystem = colorSystem;
         return this;
     }
-
     public int getImg() {
         return img;
     }
@@ -47,9 +44,7 @@ public class NewUser {
         this.img = img;
         return this;
     }
-
     private ArrayList<PillItem> allPillItems = new ArrayList<>();
-
 
     public String getName() {
         return name;
@@ -59,7 +54,6 @@ public class NewUser {
         this.name = name;
         return this;
     }
-
     public ArrayList<PillItem> getAllPillItems() {
         return allPillItems;
     }
@@ -89,14 +83,6 @@ public class NewUser {
 
     public void addPill(PillItem pill_item){
         allPillItems.add(pill_item);
-    }
-
-    public void removePill(PillItem pill_item){
-        for (int i = 0; i < allPillItems.size(); i++) {
-            if(allPillItems.get(i).equals(pill_item)){
-                allPillItems.remove(pill_item);
-            }
-        }
     }
 
     /**

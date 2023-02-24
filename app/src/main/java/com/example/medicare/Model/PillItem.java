@@ -16,40 +16,9 @@ public class PillItem {
     private Boolean thursday;
     private Boolean friday;
     private Boolean saturday;
-    private Uri imgUri;
-    //private Bitmap imgBitmapPill;
-
-    //private String imgBitmap;
 
     public PillItem() {
     }
-
-    public Uri getImgUri() {
-        return imgUri;
-    }
-
-    public PillItem setImgUri(Uri imgUri) {
-        this.imgUri = imgUri;
-        return this;
-    }
-
-    /*public String getImgBitmap() {
-        return imgBitmap;
-    }
-
-    public Pill_Item setImgBitmap(String imgBitmap) {
-        this.imgBitmap = imgBitmap;
-        return this;
-    }*/
-
-   /* public Bitmap getImgBitmapPill() {
-        return imgBitmapPill;
-    }
-
-    public Pill_Item setImgBitmapPill(Bitmap imgBitmapPill) {
-        this.imgBitmapPill = imgBitmapPill;
-        return this;
-    }*/
 
     public String getNamePill() {
         return namePill;

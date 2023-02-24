@@ -42,10 +42,6 @@ public class GridAdapter extends BaseAdapter implements RecyclerViewInterface {
     private StorageReference storageReference;
     private LayoutInflater inflater;
 
-    private NewUser newUser;
-
-    private ProgressDialog progressDialog;
-
     private int day;
 
     public GridAdapter(Context context, String[] timeInDay, int[] images, ArrayList<PillItem>[] pill_items, int day) {
@@ -179,7 +175,6 @@ public class GridAdapter extends BaseAdapter implements RecyclerViewInterface {
 
             }
         });
-
         dialog.setCancelable(true);
         dialog.show();
     }

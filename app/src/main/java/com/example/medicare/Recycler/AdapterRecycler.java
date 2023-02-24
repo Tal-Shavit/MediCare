@@ -22,14 +22,10 @@ public class AdapterRecycler extends RecyclerView.Adapter<MyViewHolder> {
     private ArrayList<PillItem> pillItemArrayList;
     private PillItem pill_item;
 
-    private NewUser newUser;
-
     public AdapterRecycler(Context context, ArrayList<PillItem> pillItemArrayList, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
         this.pillItemArrayList = pillItemArrayList;
         this.recyclerViewInterface = recyclerViewInterface;
-
-
     }
 
     @NonNull
@@ -37,7 +33,6 @@ public class AdapterRecycler extends RecyclerView.Adapter<MyViewHolder> {
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.recyclerview_row, parent, false);
         return new MyViewHolder(view, recyclerViewInterface);
-        //return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.recyclerview_row,parent,false));
     }
 
     @Override

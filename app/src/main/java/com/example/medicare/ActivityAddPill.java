@@ -151,7 +151,6 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
                 searchBar_TXT_serch.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
                     }
 
                     @Override
@@ -161,7 +160,6 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
 
                     @Override
                     public void afterTextChanged(Editable s) {
-
                     }
                 });
 
@@ -228,7 +226,6 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
                 showImageDialog();
             }
         });
-
         initSpinner();
     }
 
@@ -259,15 +256,13 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(ActivityAddPill.this, "image uplodede", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityAddPill.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(ActivityAddPill.this, "error", Toast.LENGTH_SHORT).show();
                 }
                 progressDialog.dismiss();
             }
         });
-
     }
 
     public Bitmap getImageInImageView() {

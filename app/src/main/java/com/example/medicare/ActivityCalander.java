@@ -52,6 +52,10 @@ public class ActivityCalander extends AppCompatActivity{
     private MaterialButton calander_MBTN_friday;
     private MaterialButton calander_MBTN_saturday;
     private TextView calander_TXT_day;
+    private ImageButton Dialog_IMGB_chatacter;
+    private Spinner dialog_SPR_color;
+    private Button dialog_BTN_confirm;
+    private Button dialog_BTN_logout;
     private GridAdapter gridAdapter;
     private GridView gridView;
     private LinearLayout upLinear;
@@ -62,10 +66,6 @@ public class ActivityCalander extends AppCompatActivity{
     private int dayInt;
     private int month;
     private int dayOfWeekNum;
-    private ImageButton Dialog_IMGB_chatacter;
-    private Spinner dialog_SPR_color;
-    private Button dialog_BTN_confirm;
-    private Button dialog_BTN_logout;
     private NewUser newUser;
     private ArrayList<PillItem>[] allPillItems2;
     private String color;
@@ -197,7 +197,6 @@ public class ActivityCalander extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 showDialog1(newUser.getImg());
-                //showDialog1(R.drawable.other2);
             }
         });
 
