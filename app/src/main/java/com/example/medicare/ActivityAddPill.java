@@ -145,7 +145,6 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
 
                 EditText searchBar_TXT_serch = dialog.findViewById(R.id.searchBar_TXT_serch);
                 ListView searchBar_LISTV_listView = dialog.findViewById(R.id.searchBar_LISTV_listView);
-
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(ActivityAddPill.this, android.R.layout.simple_list_item_1, arrayListAllPill);
                 searchBar_LISTV_listView.setAdapter(arrayAdapter);
                 searchBar_TXT_serch.addTextChangedListener(new TextWatcher() {

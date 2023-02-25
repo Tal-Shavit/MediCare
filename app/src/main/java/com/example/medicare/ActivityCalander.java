@@ -161,8 +161,8 @@ public class ActivityCalander extends AppCompatActivity{
 
     private void loadDataOnly() {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference();//"Users"
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();//"Users"
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -189,7 +189,7 @@ public class ActivityCalander extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 openNewPillScreen();
-                loadDataOnly();
+                //loadDataOnly();
             }
         });
 
@@ -284,8 +284,8 @@ public class ActivityCalander extends AppCompatActivity{
             public void onClick(View view) {
                 loadData();
                 String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = firebaseDatabase.getReference();//"Users"
+                firebaseDatabase = FirebaseDatabase.getInstance();
+                databaseReference = firebaseDatabase.getReference();//"Users"
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -307,7 +307,7 @@ public class ActivityCalander extends AppCompatActivity{
 
                     }
                 });
-                loadData();
+                loadDataOnly();
                 dialog.dismiss();
 
             }
@@ -477,12 +477,8 @@ public class ActivityCalander extends AppCompatActivity{
         }
 
         int[] images = new int[]{
-                R.drawable.sunrise,
-                R.drawable.sun,
-                R.drawable.sky,
-                R.drawable.sunset,
-                R.drawable.cloudy,
-                R.drawable.night
+                R.drawable.sunrise, R.drawable.sun, R.drawable.sky, R.drawable.sunset,
+                R.drawable.cloudy, R.drawable.night
         };
 
         String[] timeInDay = new String[]{

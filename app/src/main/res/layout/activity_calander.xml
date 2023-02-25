@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ActivityCalander">
+    tools:context=".ActivityCalander"
+    android:background="@color/white">
 
     <LinearLayout
         android:id="@+id/upLinear"

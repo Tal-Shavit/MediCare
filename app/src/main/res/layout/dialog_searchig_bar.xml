@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="15dp"
-    android:background="@color/white"
+    android:background="@color/lightOrange"
     android:gravity="center">
     
     <TextView
@@ -31,12 +31,15 @@
         android:singleLine="true"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"
         android:background="@drawable/gridleview"
         />
 
     <ListView
         android:id="@+id/searchBar_LISTV_listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        />
 
 </LinearLayout>

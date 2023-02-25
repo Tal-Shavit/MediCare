@@ -62,6 +62,7 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/gridleview"
                     android:hint="SELECT PILL"
+                    android:textColor="@color/black"
                     android:textSize="20sp"
                     android:fontFamily="@font/candaral"
                     android:textStyle="bold"
@@ -264,6 +265,7 @@
                 android:fontFamily="@font/candaral"
                 android:hint="COUNT OF PILL"
                 android:textColor="@color/black"
+                android:textColorHint="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:inputType="number"/>
