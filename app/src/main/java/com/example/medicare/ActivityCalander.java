@@ -158,7 +158,7 @@ public class ActivityCalander extends AppCompatActivity{
             }
         });
     }
-
+//
     private void loadDataOnly() {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         firebaseDatabase = FirebaseDatabase.getInstance();
