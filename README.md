@@ -25,7 +25,7 @@ It is important to note that the pictures of the drugs in the videos do not corr
 * Uploading a photo from the gallery
 
 
-## Video for user that already used this app:
+## Video for a user who already has an account:
 
 https://www.youtube.com/watch?v=g1Gbs_bp0OM
 
