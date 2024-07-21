@@ -1,7 +1,6 @@
 package com.example.medicare.Recycler;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.medicare.Model.NewUser;
 import com.example.medicare.Model.PillItem;
 import com.example.medicare.R;
 import com.example.medicare.Interface.RecyclerViewInterface;
@@ -41,8 +39,10 @@ public class GridAdapter extends BaseAdapter implements RecyclerViewInterface {
     private ArrayList<PillItem>[] pill_items;
     private StorageReference storageReference;
     private LayoutInflater inflater;
-
+    private ImageView imageView, dialog_IMG_image;
+    private TextView textView, dialogpill_TXT_pillname, dialogpill_TXT_time, dialogpill_TXT_count;
     private int day;
+    private MaterialButton calander_MBTN_delete;
 
     public GridAdapter(Context context, String[] timeInDay, int[] images, ArrayList<PillItem>[] pill_items, int day) {
         this.context = context;
@@ -76,19 +76,24 @@ public class GridAdapter extends BaseAdapter implements RecyclerViewInterface {
         if (view == null)
             view = inflater.inflate(R.layout.grid_item, null);
 
-        ImageView imageView = view.findViewById(R.id.imageGrid);
+        findViews(view);
+        initViews(position);
+
+        return view;
+    }
+
+    private void initViews(int position) {
         imageView.setImageResource(images[position]);
-
-        TextView textView = view.findViewById(R.id.textItem);
         textView.setText(timeInDay[position]);
-
-
-        recyclerView = view.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(new AdapterRecycler(context, pill_items[position], this));
+    }
 
-        return view;
+    private void findViews(View view) {
+        imageView = view.findViewById(R.id.imageGrid);
+        textView = view.findViewById(R.id.textItem);
+        recyclerView = view.findViewById(R.id.recycler);
     }
 
     public void retriveFromStorage(String name, ImageView imageView) {
@@ -119,63 +124,103 @@ public class GridAdapter extends BaseAdapter implements RecyclerViewInterface {
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.dialog_pill_img_in_grid);
 
-        TextView dialogpill_TXT_pillname = dialog.findViewById(R.id.dialogpill_TXT_pillname);
-        TextView dialogpill_TXT_time = dialog.findViewById(R.id.dialogpill_TXT_time);
-        TextView dialogpill_TXT_count = dialog.findViewById(R.id.dialogpill_TXT_count);
-        ImageView dialog_IMG_image = dialog.findViewById(R.id.dialog_IMG_image);
-        MaterialButton calander_MBTN_delete = dialog.findViewById(R.id.calander_MBTN_delete);
+        findViewsDialog(dialog);
+        initViewsDialog(time, position);
 
+        dialog.setCancelable(true);
+        dialog.show();
+    }
+
+    private void initViewsDialog(String time, int position) {
         String arr[] = time.split(":");
         int timeInt = Integer.parseInt(arr[0]);
-        if (timeInt >= 4 && timeInt < 7) {//early morning
-            dialogpill_TXT_pillname.setText(pill_items[0].get(position).getNamePill());
-            dialogpill_TXT_time.setText(pill_items[0].get(position).getTimeToTake());
-            dialogpill_TXT_count.setText(pill_items[0].get(position).getCountToTake() + "");
-            retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
+        initEarlyMorning(timeInt, position);
+        initMorning(timeInt, position);
+        initNoon(timeInt, position);
+        initAfterNoon(timeInt, position);
+        initEvening(timeInt, position);
+        initNight(timeInt, position);
+        dialogCountTxt();
+        onDelete();
+    }
+
+
+    private void dialogCountTxt() {
+        if (Integer.parseInt(dialogpill_TXT_count.getText().toString()) == 1) {
+            dialogpill_TXT_count.setText(dialogpill_TXT_count.getText() + " pill");
+        } else {
+            dialogpill_TXT_count.setText(dialogpill_TXT_count.getText() + " pills");
         }
-        if (timeInt >= 7 && timeInt < 12) {//morning
-            dialogpill_TXT_pillname.setText(pill_items[1].get(position).getNamePill());
-            dialogpill_TXT_time.setText(pill_items[1].get(position).getTimeToTake());
-            dialogpill_TXT_count.setText(pill_items[1].get(position).getCountToTake() + "");
-            retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
-        }
-        if (timeInt >= 12 && timeInt < 16) {
-            dialogpill_TXT_pillname.setText(pill_items[2].get(position).getNamePill());
-            dialogpill_TXT_time.setText(pill_items[2].get(position).getTimeToTake());
-            dialogpill_TXT_count.setText(pill_items[2].get(position).getCountToTake() + "");
-            retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
-        }
-        if (timeInt >= 16 && timeInt < 19) {
-            dialogpill_TXT_pillname.setText(pill_items[3].get(position).getNamePill());
-            dialogpill_TXT_time.setText(pill_items[3].get(position).getTimeToTake());
-            dialogpill_TXT_count.setText(pill_items[3].get(position).getCountToTake() + "");
-            retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
-        }
-        if (timeInt >= 19 && timeInt < 24) {
-            dialogpill_TXT_pillname.setText(pill_items[4].get(position).getNamePill());
-            dialogpill_TXT_time.setText(pill_items[4].get(position).getTimeToTake());
-            dialogpill_TXT_count.setText(pill_items[4].get(position).getCountToTake() + "");
-            retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
-        }
+    }
+
+    private void initNight(int timeInt, int position) {
         if (timeInt >= 0 && timeInt < 4) {
             dialogpill_TXT_pillname.setText(pill_items[5].get(position).getNamePill());
             dialogpill_TXT_time.setText(pill_items[5].get(position).getTimeToTake());
             dialogpill_TXT_count.setText(pill_items[5].get(position).getCountToTake() + "");
             retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
         }
-        if (Integer.parseInt(dialogpill_TXT_count.getText().toString()) == 1) {
-            dialogpill_TXT_count.setText(dialogpill_TXT_count.getText() + " pill");
-        } else {
-            dialogpill_TXT_count.setText(dialogpill_TXT_count.getText() + " pills");
-        }
+    }
 
+    private void initEvening(int timeInt, int position) {
+        if (timeInt >= 19 && timeInt < 24) {
+            dialogpill_TXT_pillname.setText(pill_items[4].get(position).getNamePill());
+            dialogpill_TXT_time.setText(pill_items[4].get(position).getTimeToTake());
+            dialogpill_TXT_count.setText(pill_items[4].get(position).getCountToTake() + "");
+            retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
+        }
+    }
+
+    private void initAfterNoon(int timeInt, int position) {
+        if (timeInt >= 16 && timeInt < 19) {
+            dialogpill_TXT_pillname.setText(pill_items[3].get(position).getNamePill());
+            dialogpill_TXT_time.setText(pill_items[3].get(position).getTimeToTake());
+            dialogpill_TXT_count.setText(pill_items[3].get(position).getCountToTake() + "");
+            retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
+        }
+    }
+
+    private void initNoon(int timeInt, int position) {
+        if (timeInt >= 12 && timeInt < 16) {
+            dialogpill_TXT_pillname.setText(pill_items[2].get(position).getNamePill());
+            dialogpill_TXT_time.setText(pill_items[2].get(position).getTimeToTake());
+            dialogpill_TXT_count.setText(pill_items[2].get(position).getCountToTake() + "");
+            retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
+        }
+    }
+
+    private void initMorning(int timeInt, int position) {
+        if (timeInt >= 7 && timeInt < 12) {//morning
+            dialogpill_TXT_pillname.setText(pill_items[1].get(position).getNamePill());
+            dialogpill_TXT_time.setText(pill_items[1].get(position).getTimeToTake());
+            dialogpill_TXT_count.setText(pill_items[1].get(position).getCountToTake() + "");
+            retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
+        }
+    }
+
+    private void initEarlyMorning(int timeInt, int position) {
+        if (timeInt >= 4 && timeInt < 7) {//early morning
+            dialogpill_TXT_pillname.setText(pill_items[0].get(position).getNamePill());
+            dialogpill_TXT_time.setText(pill_items[0].get(position).getTimeToTake());
+            dialogpill_TXT_count.setText(pill_items[0].get(position).getCountToTake() + "");
+            retriveFromStorage(dialogpill_TXT_pillname.getText().toString(), dialog_IMG_image);
+        }
+    }
+
+    private void findViewsDialog(Dialog dialog) {
+        dialogpill_TXT_pillname = dialog.findViewById(R.id.dialogpill_TXT_pillname);
+        dialogpill_TXT_time = dialog.findViewById(R.id.dialogpill_TXT_time);
+        dialogpill_TXT_count = dialog.findViewById(R.id.dialogpill_TXT_count);
+        dialog_IMG_image = dialog.findViewById(R.id.dialog_IMG_image);
+        calander_MBTN_delete = dialog.findViewById(R.id.calander_MBTN_delete);
+    }
+
+    private void onDelete() {
         calander_MBTN_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
-        dialog.setCancelable(true);
-        dialog.show();
     }
 }

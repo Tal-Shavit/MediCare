@@ -1,18 +1,13 @@
 package com.example.medicare.Recycler;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.medicare.Model.NewUser;
-import com.example.medicare.R;
 import com.example.medicare.Interface.RecyclerViewInterface;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.medicare.R;
 
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -23,19 +18,26 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
     public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
         super(itemView);
 
-        textViewName = itemView.findViewById(R.id.name_pill);
-        textViewTime = itemView.findViewById(R.id.timeToTake);
-        textViewCount = itemView.findViewById(R.id.countToTake);
+        findViews(itemView);
+        initViews(recyclerViewInterface);
+    }
 
+    private void initViews(RecyclerViewInterface recyclerViewInterface) {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(recyclerViewInterface != null) {
+                if (recyclerViewInterface != null) {
                     int position = getAdapterPosition();
-                    if(position != RecyclerView.NO_POSITION)
-                        recyclerViewInterface.onItemClick(textViewTime.getText().toString(),position);
+                    if (position != RecyclerView.NO_POSITION)
+                        recyclerViewInterface.onItemClick(textViewTime.getText().toString(), position);
                 }
             }
         });
+    }
+
+    private void findViews(View itemView) {
+        textViewName = itemView.findViewById(R.id.name_pill);
+        textViewTime = itemView.findViewById(R.id.timeToTake);
+        textViewCount = itemView.findViewById(R.id.countToTake);
     }
 }

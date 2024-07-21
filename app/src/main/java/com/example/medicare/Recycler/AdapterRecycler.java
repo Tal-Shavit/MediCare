@@ -39,8 +39,8 @@ public class AdapterRecycler extends RecyclerView.Adapter<MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         pill_item = pillItemArrayList.get(position);
         holder.textViewName.setText(pill_item.getNamePill());
-        holder.textViewTime.setText(pill_item.getTimeToTake()+"");
-        holder.textViewCount.setText(pill_item.getCountToTake()+"");
+        holder.textViewTime.setText(pill_item.getTimeToTake() + "");
+        holder.textViewCount.setText(pill_item.getCountToTake() + "");
     }
 
     @Override

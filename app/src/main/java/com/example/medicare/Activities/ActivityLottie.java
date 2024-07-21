@@ -1,6 +1,5 @@
-package com.example.medicare;
+package com.example.medicare.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.medicare.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

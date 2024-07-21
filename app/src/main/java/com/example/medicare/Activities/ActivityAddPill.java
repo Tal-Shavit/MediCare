@@ -1,4 +1,4 @@
-package com.example.medicare;
+package com.example.medicare.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.example.medicare.Model.NewUser;
 import com.example.medicare.Model.PillItem;
+import com.example.medicare.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,18 +52,11 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
 
     public static final int REQUEST_CODE_GALLERY = 1;
     private StorageReference storageReference;
-    private Button newPill_BTN_confirm;
+    private Button newPill_BTN_confirm, backButton;
     private ImageButton pill_IBT_Gallery;
     private ImageView addPill_IMG_image;
-    private Button backButton;
-    private EditText addpill_TXT_count;
-    private CheckBox checkboxSun;
-    private CheckBox checkboxMon;
-    private CheckBox checkboxTue;
-    private CheckBox checkboxWed;
-    private CheckBox checkboxThu;
-    private CheckBox checkboxFri;
-    private CheckBox checkboxSat;
+    private EditText addpill_TXT_count, searchBar_TXT_serch;
+    private CheckBox checkboxSun, checkboxMon, checkboxTue, checkboxWed, checkboxThu, checkboxFri, checkboxSat;
     private TextView addPill_LBL_search;
     private Spinner spinnerForHour;
     private LinearLayout upLinear;
@@ -75,6 +69,7 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
     private DatabaseReference databaseReferenceDrugs;
     private Uri imagePath;
     private Bitmap bitmap;
+    private ListView searchBar_LISTV_listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,15 +84,15 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
         initViews();
     }
 
-    private void loadData(){
+    private void loadData() {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("Users");
         databaseReference.child(userID).get().addOnCompleteListener(task -> {
-           if(task.isSuccessful()){
-               newUser = task.getResult().getValue(NewUser.class);
-               changeColorSystem(newUser.getColorSystem());
-           }
+            if (task.isSuccessful()) {
+                newUser = task.getResult().getValue(NewUser.class);
+                changeColorSystem(newUser.getColorSystem());
+            }
         });
     }
 
@@ -109,127 +104,162 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
         databaseReferenceDrugs.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    for (int i = 8; i <= 20099; i++) {
-                        if(snapshot.child(i+"").exists()){
-                            for (DataSnapshot dataSnapshot : snapshot.child(i+"").getChildren()){
-                                String name = dataSnapshot.getValue().toString();
-                                if(name.contains("/")){
-                                    name = name.replace("/","-");
-                                }
-                                arrayListAllPill.add(name);
-                            }
-
-                        }
-                    }
+                if (snapshot.exists()) {
+                    initArrayListDrugsFunc(snapshot);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
 
     private void initViews() {
-        addPill_LBL_search.setOnClickListener(new View.OnClickListener() {
+        onAddPillSpinner();
+        onConfirmButton();
+        onAddImage();
+        initSpinner();
+    }
+
+    private void initArrayListDrugsFunc(DataSnapshot snapshot) {
+        for (int i = 8; i <= 20099; i++) {
+            if (snapshot.child(i + "").exists()) {
+                for (DataSnapshot dataSnapshot : snapshot.child(i + "").getChildren()) {
+                    String name = dataSnapshot.getValue().toString();
+                    if (name.contains("/")) {
+                        name = name.replace("/", "-");
+                    }
+                    arrayListAllPill.add(name);
+                }
+
+            }
+        }
+    }
+
+    private void onAddImage() {
+        pill_IBT_Gallery.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                dialog = new Dialog(ActivityAddPill.this);
-                dialog.setContentView(R.layout.dialog_searchig_bar);
-                dialog.getWindow().setLayout(650,800);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.setCancelable(false);
-                dialog.show();
-
-                EditText searchBar_TXT_serch = dialog.findViewById(R.id.searchBar_TXT_serch);
-                ListView searchBar_LISTV_listView = dialog.findViewById(R.id.searchBar_LISTV_listView);
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(ActivityAddPill.this, android.R.layout.simple_list_item_1, arrayListAllPill);
-                searchBar_LISTV_listView.setAdapter(arrayAdapter);
-                searchBar_TXT_serch.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        arrayAdapter.getFilter().filter(s);
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                    }
-                });
-
-                searchBar_LISTV_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        addPill_LBL_search.setText(arrayAdapter.getItem(position));
-                        addPill_LBL_search.setTextColor(Color.BLACK);
-                        dialog.dismiss();
-                    }
-                });
+            public void onClick(View view) {
+                Intent photoInent = new Intent(Intent.ACTION_PICK);
+                photoInent.setType("image/");
+                startActivityForResult(photoInent, 1);
+                showImageDialog();
             }
         });
+    }
 
+    private void onConfirmButton() {
         newPill_BTN_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
                 ref.child(userID).get().addOnCompleteListener(task -> {
-                   if(task.isSuccessful()){
-                       newUser = task.getResult().getValue(NewUser.class);
-                       if(addpill_TXT_count.getText().toString().equals("")){
-                           Toast.makeText(ActivityAddPill.this, "FILL COUNT!", Toast.LENGTH_SHORT).show();
-                           addpill_TXT_count.setHint("FILL COUNT!");
-                       }
-                       if(addPill_LBL_search.getText().toString().isEmpty()){
-                           Toast.makeText(ActivityAddPill.this, "SELECT A PILL", Toast.LENGTH_SHORT).show();
-                       }
-                       if((!checkboxSun.isChecked()&&!checkboxMon.isChecked()&&!checkboxTue.isChecked()&&!checkboxWed.isChecked()&&!checkboxThu.isChecked()&&!checkboxFri.isChecked()&&!checkboxSat.isChecked())){
-                           Toast.makeText(ActivityAddPill.this, "CHOOSE AT LEAST 1 DAY", Toast.LENGTH_SHORT).show();
-                       }
-                       if(spinnerForHour.getSelectedItem().toString().isEmpty()){
-                           Toast.makeText(ActivityAddPill.this, "SELECT HOUR!", Toast.LENGTH_SHORT).show();
-                       }
-                       else{
-                           countOfPills = Integer.parseInt(addpill_TXT_count.getText()+"");
-                           pill_item = new PillItem();
-                           pill_item.setNamePill(addPill_LBL_search.getText().toString())
-                                   .setCountToTake(countOfPills)
-                                   .setTimeToTake(pill_item.convertStringToTime(spinnerForHour.getSelectedItem().toString()).toString())
-                                   .setSunday(checkboxSun.isChecked())
-                                   .setMonday(checkboxMon.isChecked()).setTuesday(checkboxTue.isChecked())
-                                   .setWednesday(checkboxWed.isChecked()).setThursday(checkboxThu.isChecked())
-                                   .setFriday(checkboxFri.isChecked()).setSaturday(checkboxSat.isChecked());
-                           newUser.addPill(pill_item);
-                           newUser.loadToDataBase();
-                       }
-                   }
+                    if (task.isSuccessful()) {
+                        checkIfAllCorrectly(task);
+                    }
                 });
-                if(!addpill_TXT_count.getText().toString().equals("") && !addPill_LBL_search.getText().toString().isEmpty() &&
-                        (checkboxSun.isChecked()||checkboxMon.isChecked()||checkboxTue.isChecked()||checkboxWed.isChecked()||checkboxThu.isChecked()||checkboxFri.isChecked()||checkboxSat.isChecked()) && (!spinnerForHour.getSelectedItem().toString().isEmpty())){
+                if (!addpill_TXT_count.getText().toString().equals("") && !addPill_LBL_search.getText().toString().isEmpty() &&
+                        (checkboxSun.isChecked() || checkboxMon.isChecked() || checkboxTue.isChecked() || checkboxWed.isChecked() || checkboxThu.isChecked() || checkboxFri.isChecked() || checkboxSat.isChecked()) && (!spinnerForHour.getSelectedItem().toString().isEmpty())) {
                     backCalanderScreen();
                 }
             }
         });
+    }
 
-        pill_IBT_Gallery.setOnClickListener(new View.OnClickListener() {
+    private void checkIfAllCorrectly(Task<DataSnapshot> task) {
+        newUser = task.getResult().getValue(NewUser.class);
+        if (addpill_TXT_count.getText().toString().equals("")) {
+            Toast.makeText(ActivityAddPill.this, "FILL COUNT!", Toast.LENGTH_SHORT).show();
+            addpill_TXT_count.setHint("FILL COUNT!");
+        }
+        if (addPill_LBL_search.getText().toString().isEmpty()) {
+            Toast.makeText(ActivityAddPill.this, "SELECT A PILL", Toast.LENGTH_SHORT).show();
+        }
+        if ((!checkboxSun.isChecked() && !checkboxMon.isChecked() && !checkboxTue.isChecked() && !checkboxWed.isChecked() && !checkboxThu.isChecked() && !checkboxFri.isChecked() && !checkboxSat.isChecked())) {
+            Toast.makeText(ActivityAddPill.this, "CHOOSE AT LEAST 1 DAY", Toast.LENGTH_SHORT).show();
+        }
+        if (spinnerForHour.getSelectedItem().toString().isEmpty()) {
+            Toast.makeText(ActivityAddPill.this, "SELECT HOUR!", Toast.LENGTH_SHORT).show();
+        } else {
+            addPill();
+        }
+    }
+
+    private void addPill() {
+        countOfPills = Integer.parseInt(addpill_TXT_count.getText() + "");
+        pill_item = new PillItem();
+        pill_item.setNamePill(addPill_LBL_search.getText().toString())
+                .setCountToTake(countOfPills)
+                .setTimeToTake(pill_item.convertStringToTime(spinnerForHour.getSelectedItem().toString()).toString())
+                .setSunday(checkboxSun.isChecked())
+                .setMonday(checkboxMon.isChecked()).setTuesday(checkboxTue.isChecked())
+                .setWednesday(checkboxWed.isChecked()).setThursday(checkboxThu.isChecked())
+                .setFriday(checkboxFri.isChecked()).setSaturday(checkboxSat.isChecked());
+        newUser.addPill(pill_item);
+        newUser.loadToDataBase();
+    }
+
+    private void onAddPillSpinner() {
+        addPill_LBL_search.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent photoInent = new Intent(Intent.ACTION_PICK);
-                photoInent.setType("image/");
-                startActivityForResult(photoInent,1);
-                showImageDialog();
+            public void onClick(View v) {
+                initDialog();
+                findViewsDialog(dialog);
+
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(ActivityAddPill.this, android.R.layout.simple_list_item_1, arrayListAllPill);
+                searchBar_LISTV_listView.setAdapter(arrayAdapter);
+                onSearch(arrayAdapter);
+                onListView(arrayAdapter);
             }
         });
-        initSpinner();
+    }
+
+    private void onListView(ArrayAdapter<String> arrayAdapter) {
+        searchBar_LISTV_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                addPill_LBL_search.setText(arrayAdapter.getItem(position));
+                addPill_LBL_search.setTextColor(Color.BLACK);
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void onSearch(ArrayAdapter<String> arrayAdapter) {
+        searchBar_TXT_serch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                arrayAdapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    private void findViewsDialog(Dialog dialog) {
+        searchBar_TXT_serch = dialog.findViewById(R.id.searchBar_TXT_serch);
+        searchBar_LISTV_listView = dialog.findViewById(R.id.searchBar_LISTV_listView);
+    }
+
+    private void initDialog() {
+        dialog = new Dialog(ActivityAddPill.this);
+        dialog.setContentView(R.layout.dialog_searchig_bar);
+        dialog.getWindow().setLayout(650, 800);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     private void initSpinner() {
-        ArrayAdapter<CharSequence> adapterHours = ArrayAdapter.createFromResource(this, R.array.hoursList,android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapterHours = ArrayAdapter.createFromResource(this, R.array.hoursList, android.R.layout.simple_spinner_item);
         adapterHours.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerForHour.setAdapter(adapterHours);
         spinnerForHour.setOnItemSelectedListener(this);
@@ -251,13 +281,12 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
         progressDialog.setTitle("Uploading...");
         progressDialog.show();
 
-        FirebaseStorage.getInstance().getReference("images/"+ addPill_LBL_search.getText().toString()+".jpg").putFile(imagePath).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+        FirebaseStorage.getInstance().getReference("images/" + addPill_LBL_search.getText().toString() + ".jpg").putFile(imagePath).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Toast.makeText(ActivityAddPill.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                 }
                 progressDialog.dismiss();
             }
@@ -268,7 +297,7 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
         bitmap = null;
 
         try {
-            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),imagePath);
+            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imagePath);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -282,17 +311,23 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.show_image_pill);
 
-        addPill_IMG_image = dialog.findViewById(R.id.addPill_IMG_image);
-        backButton = dialog.findViewById(R.id.backButton);
-
+        findViewsImageDialog();
         dialog.show();
+        onBackButton();
+    }
 
+    private void onBackButton() {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
             }
         });
+    }
+
+    private void findViewsImageDialog() {
+        addPill_IMG_image = dialog.findViewById(R.id.addPill_IMG_image);
+        backButton = dialog.findViewById(R.id.backButton);
     }
 
     private void findViews() {
@@ -325,23 +360,23 @@ public class ActivityAddPill extends AppCompatActivity implements AdapterView.On
 
     }
 
-    public void changeColorSystem(String color){
-        if(color.equals("Green")){
+    public void changeColorSystem(String color) {
+        if (color.equals("Green")) {
             upLinear.setBackgroundColor(getResources().getColor(R.color.lightGreen));
         }
-        if(color.equals("Blue")){
+        if (color.equals("Blue")) {
             upLinear.setBackgroundColor(getResources().getColor(R.color.lightBlue));
         }
-        if(color.equals("Pink")){
+        if (color.equals("Pink")) {
             upLinear.setBackgroundColor(getResources().getColor(R.color.lightPink));
         }
-        if(color.equals("Orange")){
+        if (color.equals("Orange")) {
             upLinear.setBackgroundColor(getResources().getColor(R.color.lightOrange));
         }
-        if(color.equals("Yellow")){
+        if (color.equals("Yellow")) {
             upLinear.setBackgroundColor(getResources().getColor(R.color.lightYellow));
         }
-        if(color.equals("Red")){
+        if (color.equals("Red")) {
             upLinear.setBackgroundColor(getResources().getColor(R.color.lightRed));
         }
     }

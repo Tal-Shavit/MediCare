@@ -19,7 +19,7 @@
         android:theme="@style/Theme.MediCare"
         tools:targetApi="31">
         <activity
-            android:name=".ActivityLottie"
+            android:name=".Activities.ActivityLottie"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
@@ -33,7 +33,7 @@
 
         </activity>
         <activity
-            android:name=".ActivityStart"
+            android:name=".Activities.ActivityStart"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
@@ -41,21 +41,21 @@
 
         </activity>
         <activity
-            android:name=".ActivityAddPill"
+            android:name=".Activities.ActivityAddPill"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ActivityCalander"
+            android:name=".Activities.ActivityCalander"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ActivityCharacters"
+            android:name=".Activities.ActivityCharacters"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

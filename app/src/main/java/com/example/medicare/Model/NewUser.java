@@ -28,6 +28,7 @@ public class NewUser {
         this.count = count;
         return this;
     }
+
     public String getColorSystem() {
         return colorSystem;
     }
@@ -36,6 +37,7 @@ public class NewUser {
         this.colorSystem = colorSystem;
         return this;
     }
+
     public int getImg() {
         return img;
     }
@@ -44,6 +46,7 @@ public class NewUser {
         this.img = img;
         return this;
     }
+
     private ArrayList<PillItem> allPillItems = new ArrayList<>();
 
     public String getName() {
@@ -54,6 +57,7 @@ public class NewUser {
         this.name = name;
         return this;
     }
+
     public ArrayList<PillItem> getAllPillItems() {
         return allPillItems;
     }
@@ -81,15 +85,11 @@ public class NewUser {
         return this;
     }
 
-    public void addPill(PillItem pill_item){
+    public void addPill(PillItem pill_item) {
         allPillItems.add(pill_item);
     }
 
-    /**
-     * for user that already exist
-     * or creating a new user
-     */
-    public void loadToDataBase(){
+    public void loadToDataBase() {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference ref = db.getReference("Users");

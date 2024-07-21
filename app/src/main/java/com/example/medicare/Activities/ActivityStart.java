@@ -1,4 +1,4 @@
-package com.example.medicare;
+package com.example.medicare.Activities;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.medicare.Model.NewUser;
+import com.example.medicare.R;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
@@ -46,7 +47,7 @@ public class ActivityStart extends AppCompatActivity {
         }
     }
 
-    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> signInLauncher = (ActivityResultLauncher<Intent>) registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
             new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
                 @Override

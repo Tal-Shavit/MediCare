@@ -9,13 +9,7 @@ public class PillItem {
     private String namePill;
     private String timeToTake;
     private int countToTake;
-    private Boolean sunday;
-    private Boolean monday;
-    private Boolean tuesday;
-    private Boolean wednesday;
-    private Boolean thursday;
-    private Boolean friday;
-    private Boolean saturday;
+    private Boolean sunday, monday, tuesday, wednesday, thursday, friday, saturday;
 
     public PillItem() {
     }
@@ -110,9 +104,8 @@ public class PillItem {
         return this;
     }
 
-    public LocalTime convertStringToTime(String time){
+    public LocalTime convertStringToTime(String time) {
         String arr[] = time.split(":");
         return LocalTime.of(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]));
     }
-
 }
